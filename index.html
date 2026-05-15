@@ -122,8 +122,8 @@
   .top3-slot{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
   .top3-slot:last-child{margin-bottom:0;}
   .top3-num{width:22px;height:22px;border-radius:3px;background:rgba(255,255,255,0.2);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .top3-select{flex:1;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;font-family:Arial,sans-serif;font-size:0.85rem;padding:6px 8px;border-radius:4px;cursor:pointer;outline:none;}
-  .top3-select option{background:var(--blue-dark);color:white;}
+  .top3-select{flex:1;background:rgba(255,255,255,0.9);border:1px solid rgba(255,255,255,0.5);color:#1a1a2e;font-family:Arial,sans-serif;font-size:0.85rem;padding:6px 8px;border-radius:4px;cursor:pointer;outline:none;} 
+  .top3-select option{background:#f0f4f8 !important;color:#1a1a2e !important;font-size:0.85rem;}
 
   /* ── DATE GROUP HEADER ── */
   .date-group-header{font-size:0.7rem;font-weight:700;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;padding:10px 4px 6px;margin-top:6px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:8px;}
@@ -1149,6 +1149,378 @@
   .welcome-fresh-btn:hover{background:#eef4fb;border-color:#1a4480;color:#1a4480;}
   .welcome-version{font-size:0.68rem;color:#b0bdd0;text-align:center;margin-top:16px;}
   .welcome-progress{display:none;text-align:center;padding:12px;font-size:0.85rem;color:#2d6a4f;font-weight:700;}
+
+  /* ── COLOR THEMES ── */
+  /* Each theme redefines the --blue family only.
+     Gold, green habits, red priority stay untouched. */
+
+  :root[data-theme="green"]{
+    --blue:        #2d6a4f;
+    --blue-mid:    #3a8462;
+    --blue-dark:   #1a4030;
+    --blue-light:  #ddeee6;
+    --blue-faint:  #eef7f1;
+  }
+  :root[data-theme="teal"]{
+    --blue:        #0d6e7a;
+    --blue-mid:    #138a99;
+    --blue-dark:   #084e58;
+    --blue-light:  #d0eef2;
+    --blue-faint:  #e8f7f9;
+  }
+  :root[data-theme="slate"]{
+    --blue:        #3d4f6b;
+    --blue-mid:    #4e6385;
+    --blue-dark:   #273345;
+    --blue-light:  #d8deea;
+    --blue-faint:  #edf0f5;
+  }
+  :root[data-theme="burgundy"]{
+    --blue:        #6b1f3a;
+    --blue-mid:    #8a2d4e;
+    --blue-dark:   #4a1228;
+    --blue-light:  #f0d6de;
+    --blue-faint:  #f9edf0;
+  }
+  :root[data-theme="copper"]{
+    --blue:        #8b4a1a;
+    --blue-mid:    #a85e28;
+    --blue-dark:   #5e3010;
+    --blue-light:  #f0dece;
+    --blue-faint:  #faf2ea;
+  }
+
+  /* ── THEME PICKER SWATCHES ── */
+  .theme-picker{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .theme-swatch{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.2s;position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+  .theme-swatch:hover{transform:scale(1.12);}
+  .theme-swatch.active{border-color:var(--ink);box-shadow:0 0 0 2px white, 0 0 0 4px var(--ink);}
+  .theme-swatch::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;font-weight:700;opacity:0;}
+  .theme-swatch.active::after{opacity:1;}
+  .theme-label{font-size:0.72rem;color:var(--ink-faint);text-align:center;margin-top:4px;}
+  .theme-option{display:flex;flex-direction:column;align-items:center;gap:2px;}
+
+  /* ── CUSTOM TOP3 DROPDOWN (replaces native select) ── */
+  .top3-dropdown{position:relative;flex:1;}
+  .top3-dd-selected{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);
+    color:white;font-family:Arial,sans-serif;font-size:0.85rem;padding:6px 10px;border-radius:4px;
+    cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;
+    min-height:34px;user-select:none;}
+  .top3-dd-selected:hover{background:rgba(255,255,255,0.22);}
+  .top3-dd-selected.done-strike{text-decoration:line-through;opacity:0.6;}
+  .top3-dd-arrow{font-size:0.65rem;flex-shrink:0;opacity:0.7;}
+  .top3-dd-list{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;
+    background:#1e3a5f;border:1.5px solid rgba(255,255,255,0.2);border-radius:6px;
+    z-index:500;max-height:260px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.35);}
+  .top3-dd-list.open{display:block;}
+  .top3-dd-item{padding:9px 12px;color:white;font-family:Arial,sans-serif;font-size:0.84rem;
+    cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);line-height:1.3;}
+  .top3-dd-item:last-child{border-bottom:none;}
+  .top3-dd-item:hover{background:rgba(255,255,255,0.15);}
+  .top3-dd-item.selected{background:rgba(255,255,255,0.12);font-weight:700;}
+  .top3-dd-item.placeholder{color:rgba(255,255,255,0.5);font-style:italic;}
+  .top3-dd-list-label{font-size:0.62rem;font-weight:700;color:rgba(255,255,255,0.4);
+    letter-spacing:0.08em;text-transform:uppercase;padding:7px 12px 4px;}
+
+  /* ── PURPLE THEME ── */
+  :root[data-theme="purple"]{
+    --blue:        #5b2d8b;
+    --blue-mid:    #7040a8;
+    --blue-dark:   #3a1a5e;
+    --blue-light:  #e8d8f5;
+    --blue-faint:  #f4eefb;
+  }
+  /* ── ORANGE THEME ── */
+  :root[data-theme="orange"]{
+    --blue:        #c45c1a;
+    --blue-mid:    #d97030;
+    --blue-dark:   #8c3e0e;
+    --blue-light:  #fae0cc;
+    --blue-faint:  #fdf2eb;
+  }
+
+  /* ── TASK MOVE ── */
+  .task-move-btn{background:none;border:1px solid var(--border);color:var(--ink-faint);
+    padding:1px 6px;border-radius:3px;font-family:Arial,sans-serif;font-size:0.65rem;
+    cursor:pointer;margin-left:3px;opacity:0;transition:opacity 0.15s;white-space:nowrap;}
+  .task-item:hover .task-move-btn{opacity:1;}
+  .task-move-btn:hover{border-color:var(--blue);color:var(--blue);}
+
+  /* Move task modal */
+  #move-task-overlay{display:none;position:fixed;inset:0;background:rgba(10,25,50,0.65);
+    z-index:2000;align-items:center;justify-content:center;padding:16px;}
+  #move-task-overlay.visible{display:flex;}
+  #move-task-box{background:var(--white);border-radius:10px;padding:22px 24px;
+    max-width:400px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.25);animation:popIn 0.25s ease;}
+  .move-task-title{font-size:0.68rem;font-weight:700;color:var(--blue);letter-spacing:0.1em;
+    text-transform:uppercase;margin-bottom:6px;}
+  .move-task-text{font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:14px;
+    padding:10px 12px;background:var(--blue-faint);border-radius:6px;line-height:1.4;}
+  .move-task-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .move-task-list-btn{padding:9px 10px;border:1.5px solid var(--border);border-radius:6px;
+    background:var(--white);font-family:Arial,sans-serif;font-size:0.82rem;cursor:pointer;
+    text-align:left;transition:all 0.15s;color:var(--ink-mid);}
+  .move-task-list-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-faint);}
+  .move-task-list-btn.current{border-color:var(--border-light);color:var(--ink-faint);
+    cursor:default;font-style:italic;}
+
+  /* ══ 1. SALES ACTIVITY DASHBOARD ══ */
+  .sales-dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+  @media(max-width:600px){.sales-dash-grid{grid-template-columns:1fr 1fr;}}
+  .sales-dash-card{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+  .sales-dash-num{font-size:1.6rem;font-weight:700;color:var(--blue);}
+  .sales-dash-lbl{font-size:0.62rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.07em;margin-top:3px;}
+  .sales-dash-sub{font-size:0.72rem;color:var(--ink-light);margin-top:2px;}
+  .activity-feed-item{display:flex;gap:10px;padding:8px 4px;border-bottom:1px solid var(--border-light);font-size:0.82rem;}
+  .activity-feed-item:last-child{border-bottom:none;}
+  .activity-feed-icon{font-size:1rem;flex-shrink:0;}
+  .activity-feed-body{flex:1;}
+  .activity-feed-who{font-weight:700;color:var(--ink);}
+  .activity-feed-note{color:var(--ink-mid);font-size:0.78rem;}
+  .activity-feed-date{font-size:0.68rem;color:var(--ink-faint);white-space:nowrap;}
+
+  /* ══ 2. RAILROAD ACCOUNT CARDS ══ */
+  .account-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;transition:box-shadow 0.15s;}
+  .account-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+  .account-card-header{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;background:var(--blue-faint);}
+  .account-railroad-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:white;flex-shrink:0;}
+  .account-card-name{font-size:1rem;font-weight:700;color:var(--blue);flex:1;}
+  .account-card-meta{font-size:0.72rem;color:var(--ink-faint);}
+  .account-status-badge{font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+  .account-status-active{background:var(--green-light);color:var(--green);}
+  .account-status-warm{background:var(--gold-bg);color:var(--gold);}
+  .account-status-cold{background:var(--off-white);color:var(--ink-faint);}
+  .account-card-body{display:none;padding:14px 16px;}
+  .account-card-body.open{display:block;}
+  .account-detail-row{display:flex;gap:8px;margin-bottom:8px;font-size:0.83rem;}
+  .account-detail-label{font-size:0.65rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.07em;min-width:70px;padding-top:2px;}
+  .account-detail-val{color:var(--ink-mid);flex:1;line-height:1.5;}
+  .account-section-title{font-size:0.65rem;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em;margin:10px 0 5px;}
+  .account-fu-item{font-size:0.8rem;padding:5px 8px;background:var(--blue-faint);border-radius:4px;margin-bottom:4px;color:var(--ink-mid);}
+  .account-edit-btn{background:none;border:1.5px solid var(--border);color:var(--ink-faint);padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;font-family:Arial,sans-serif;}
+  .account-edit-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .account-add-fu-btn{background:var(--blue);color:white;border:none;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;font-family:Arial,sans-serif;}
+
+  /* ══ 3. TEMPLATE LIBRARY ══ */
+  .template-card{background:var(--white);border:1.5px solid var(--border);border-radius:6px;margin-bottom:8px;overflow:hidden;}
+  .template-card-header{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;background:var(--off-white);}
+  .template-card-header:hover{background:var(--blue-faint);}
+  .template-cat-badge{font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;}
+  .tcat-technical{background:var(--blue-light);color:var(--blue);}
+  .tcat-rfp{background:#fff3e0;color:#e65100;}
+  .tcat-railroad{background:#e8f5e9;color:#1b5e20;}
+  .tcat-esco{background:#f3e5f5;color:#6a1b9a;}
+  .tcat-product{background:var(--gold-bg);color:var(--gold);}
+  .template-title{font-size:0.88rem;font-weight:700;color:var(--ink);flex:1;}
+  .template-body{display:none;padding:10px 12px;font-size:0.82rem;color:var(--ink-mid);line-height:1.6;white-space:pre-wrap;background:var(--white);}
+  .template-body.open{display:block;}
+  .template-use-btn{background:var(--blue);color:white;border:none;padding:5px 12px;border-radius:4px;font-size:0.75rem;font-weight:700;cursor:pointer;margin-top:8px;font-family:Arial,sans-serif;}
+  .template-use-btn:hover{background:var(--blue-mid);}
+  .template-search-input{width:100%;font-family:Arial,sans-serif;font-size:0.85rem;border:1.5px solid var(--border);border-radius:20px;padding:7px 14px;outline:none;background:var(--white);color:var(--ink);margin-bottom:10px;transition:border-color 0.15s;}
+  .template-search-input:focus{border-color:var(--blue);}
+
+  /* ══ 4. TASK COMPLETION TREND CHART ══ */
+  .trend-chart-wrap{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;}
+  .trend-chart-title{font-size:0.68rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:10px;}
+  .trend-bars{display:flex;align-items:flex-end;gap:3px;height:80px;padding-bottom:20px;position:relative;}
+  .trend-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:0;}
+  .trend-bar{width:100%;background:var(--blue);border-radius:3px 3px 0 0;min-height:2px;transition:height 0.3s;}
+  .trend-bar.today{background:var(--gold);}
+  .trend-bar-label{font-size:0.52rem;color:var(--ink-faint);margin-top:3px;text-align:center;}
+  .trend-bar-val{font-size:0.58rem;color:var(--ink-faint);margin-bottom:2px;}
+
+  /* ══ 5. CONTACT FREQUENCY TRACKER ══ */
+  .freq-item{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--border-light);font-size:0.82rem;}
+  .freq-item:last-child{border-bottom:none;}
+  .freq-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .freq-dot-ok{background:var(--green);}
+  .freq-dot-warn{background:var(--gold);}
+  .freq-dot-late{background:var(--pri-high);}
+  .freq-name{font-weight:700;flex:1;color:var(--ink);}
+  .freq-days{font-size:0.75rem;color:var(--ink-faint);white-space:nowrap;}
+  .freq-days.late{color:var(--pri-high);font-weight:700;}
+
+  /* ══ 6. PARA TIMELINE VIEW ══ */
+  .timeline-wrap{overflow-x:auto;padding-bottom:8px;}
+  .timeline-header{display:flex;gap:2px;margin-bottom:6px;padding-left:160px;}
+  .timeline-month-lbl{font-size:0.62rem;color:var(--ink-faint);font-weight:700;text-transform:uppercase;min-width:60px;}
+  .timeline-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .timeline-proj-name{font-size:0.78rem;font-weight:700;color:var(--ink);width:150px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .timeline-track{flex:1;height:20px;background:var(--off-white);border-radius:10px;position:relative;min-width:300px;}
+  .timeline-bar{position:absolute;height:100%;border-radius:10px;display:flex;align-items:center;padding:0 8px;font-size:0.62rem;color:white;font-weight:700;overflow:hidden;white-space:nowrap;}
+  .tbar-ok{background:var(--blue);}
+  .tbar-soon{background:var(--gold);}
+  .tbar-overdue{background:var(--pri-high);}
+  .tbar-none{background:var(--green);}
+
+  /* ══ 7. JOURNAL WORD COUNT SPARKLINE ══ */
+  .journal-sparkline{display:flex;align-items:flex-end;gap:2px;height:32px;margin:6px 0 10px;}
+  .sparkline-bar{flex:1;background:var(--blue-light);border-radius:2px 2px 0 0;min-height:2px;transition:all 0.2s;}
+  .sparkline-bar.today{background:var(--blue);}
+  .sparkline-bar:hover{background:var(--blue-mid);}
+
+  /* ══ 8. QUICK DUE DATE BUTTONS ══ */
+  .quick-date-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px;}
+  .quick-date-btn{background:var(--white);border:1.5px solid var(--border);color:var(--ink-mid);
+    padding:4px 9px;border-radius:12px;font-family:Arial,sans-serif;font-size:0.72rem;
+    cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+  .quick-date-btn:hover{background:var(--blue);border-color:var(--blue);color:white;}
+
+  /* ══ 9. COMMS TONE SELECTOR ══ */
+  .tone-selector{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;}
+  .tone-btn{background:var(--white);border:1.5px solid var(--border);color:var(--ink-mid);
+    padding:5px 12px;border-radius:16px;font-family:Arial,sans-serif;font-size:0.75rem;
+    font-weight:700;cursor:pointer;transition:all 0.15s;}
+  .tone-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .tone-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
+
+  /* ══ 10-14: ALIA PANEL, PROPOSAL TRACKER, MORNING BRIEF AUTO, ACCOUNTS TAB ══ */
+  .proposal-card{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+  .proposal-stage{font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap;}
+  .pstage-identified{background:#e3f2fd;color:#0d47a1;}
+  .pstage-quoted{background:var(--gold-bg);color:var(--gold);}
+  .pstage-submitted{background:var(--blue-light);color:var(--blue);}
+  .pstage-followup{background:#fff3e0;color:#e65100;}
+  .pstage-won{background:var(--green-light);color:var(--green);}
+  .pstage-lost{background:var(--pri-high-bg);color:var(--pri-high);}
+  .proposal-name{font-weight:700;color:var(--ink);flex:1;font-size:0.88rem;}
+  .proposal-meta{font-size:0.72rem;color:var(--ink-faint);}
+  .proposal-add-form{background:var(--off-white);border-radius:8px;padding:14px;margin-bottom:12px;}
+  .proposal-input{width:100%;font-family:Arial,sans-serif;font-size:0.85rem;border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;outline:none;background:var(--white);color:var(--ink);margin-bottom:6px;transition:border-color 0.15s;}
+  .proposal-input:focus{border-color:var(--blue);}
+
+  /* ══ FEATURE 3: Task sort buttons ══ */
+  .sort-btn-row{display:flex;gap:5px;margin-bottom:6px;flex-wrap:wrap;}
+  .sort-btn{background:var(--white);border:1.5px solid var(--border);color:var(--ink-faint);
+    padding:3px 10px;border-radius:12px;font-family:Arial,sans-serif;font-size:0.72rem;
+    cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+  .sort-btn:hover,.sort-btn.active{background:var(--blue);border-color:var(--blue);color:white;}
+
+  /* ══ FEATURE 4: Task due date countdown badge ══ */
+  .due-countdown{font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;
+    margin-left:4px;white-space:nowrap;}
+  .due-countdown.overdue{background:var(--pri-high-bg);color:var(--pri-high);}
+  .due-countdown.today{background:var(--gold-bg);color:var(--gold);}
+  .due-countdown.soon{background:var(--blue-light);color:var(--blue);}
+
+  /* ══ FEATURE 5: FU → email draft ══ */
+  .fu-btn-email{background:none;border:1.5px solid var(--border);color:var(--ink-faint);
+    padding:6px 10px;border-radius:4px;font-family:Arial,sans-serif;font-size:0.78rem;cursor:pointer;}
+  .fu-btn-email:hover{border-color:var(--blue);color:var(--blue);}
+
+  /* ══ FEATURE 6: FU export ══ */
+  .fu-export-btn{background:none;border:1.5px solid var(--border);color:var(--ink-faint);
+    padding:4px 10px;border-radius:4px;font-family:Arial,sans-serif;font-size:0.75rem;cursor:pointer;}
+  .fu-export-btn:hover{border-color:var(--green);color:var(--green);}
+
+  /* ══ FEATURE 7: Calendar event colors ══ */
+  .event-type-select{font-family:Arial,sans-serif;font-size:0.78rem;border:1.5px solid var(--border);
+    border-radius:4px;padding:4px 8px;background:var(--white);color:var(--ink);outline:none;}
+  .cal-event-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px;flex-shrink:0;}
+  .evtype-ies{background:#5b2d8b;}
+  .evtype-railroad{background:#1b5e20;}
+  .evtype-customer{background:#0d47a1;}
+  .evtype-internal{background:#e65100;}
+  .evtype-personal{background:#880e4f;}
+  .evtype-default{background:var(--blue);}
+
+  /* ══ FEATURE 8: Morning Brief auto-gen ══ */
+  .brief-output{width:100%;font-family:Arial,sans-serif;font-size:0.82rem;border:1.5px solid var(--border);
+    border-radius:6px;padding:10px;background:var(--off-white);color:var(--ink);resize:vertical;
+    min-height:200px;outline:none;line-height:1.6;margin-top:8px;}
+
+  /* ══ FEATURE 9: Bi-Weekly Report ══ */
+  .report-output{width:100%;font-family:monospace;font-size:0.8rem;border:1.5px solid var(--border);
+    border-radius:6px;padding:10px;background:#f8f9fc;color:var(--ink);resize:vertical;
+    min-height:200px;outline:none;line-height:1.6;margin-top:8px;}
+
+  /* ══ FEATURE 10: Railroad IGI Dashboard ══ */
+  .igi-dash-card{background:var(--white);border:1.5px solid var(--border);border-radius:8px;
+    margin-bottom:8px;overflow:hidden;}
+  .igi-dash-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--blue-faint);}
+  .igi-dash-rr-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;
+    justify-content:center;font-size:0.9rem;font-weight:700;color:white;flex-shrink:0;}
+  .igi-dash-name{font-weight:700;color:var(--blue);flex:1;font-size:0.9rem;}
+  .igi-dash-stats{display:flex;gap:6px;font-size:0.72rem;flex-wrap:wrap;}
+  .igi-stat{padding:2px 7px;border-radius:8px;font-weight:700;}
+  .igi-stat-fu{background:#fff3e0;color:#e65100;}
+  .igi-stat-prop{background:var(--blue-light);color:var(--blue);}
+  .igi-stat-days{background:var(--off-white);color:var(--ink-faint);}
+  .igi-stat-days.late{background:var(--pri-high-bg);color:var(--pri-high);}
+
+  /* ══ FEATURE 11: Win/Loss note ══ */
+  .wl-note{font-size:0.75rem;color:var(--ink-faint);margin-top:2px;font-style:italic;}
+
+  /* ══ FEATURE 12: ALIA-V Tracker ══ */
+  .alia-track-item{display:flex;align-items:center;gap:10px;padding:9px 4px;
+    border-bottom:1px solid var(--border-light);}
+  .alia-track-item:last-child{border-bottom:none;}
+  .alia-track-name{flex:1;font-size:0.85rem;color:var(--ink);}
+  .alia-track-status{font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+  .alia-s-draft{background:#e3f2fd;color:#0d47a1;}
+  .alia-s-review{background:var(--gold-bg);color:var(--gold);}
+  .alia-s-submitted{background:var(--blue-light);color:var(--blue);}
+  .alia-s-approved{background:var(--green-light);color:var(--green);}
+  .alia-s-pending{background:var(--off-white);color:var(--ink-faint);}
+
+  /* ══ FEATURE 13: Comms streamline ══ */
+  .comms-tab-pills{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:12px;}
+  .comms-pill{background:none;border:none;padding:8px 14px;font-family:Arial,sans-serif;
+    font-size:0.82rem;color:var(--ink-faint);cursor:pointer;border-bottom:2px solid transparent;
+    margin-bottom:-2px;transition:all 0.15s;font-weight:700;}
+  .comms-pill.active{color:var(--blue);border-bottom-color:var(--blue);}
+  .comms-pill:hover{color:var(--blue);}
+
+  /* ── TASK STATUS INDICATOR ── */
+  /* Three states: none (default), in-progress (blue pulse), pending (gold) */
+
+  /* In Progress — active blue left border + subtle background */
+  .task-item.status-inprogress{
+    border-left:3px solid var(--blue);
+    background:var(--blue-faint);
+    border-radius:0 4px 4px 0;
+  }
+  .task-item.status-inprogress:hover{background:var(--blue-light);}
+
+  /* Pending / Waiting — gold left border */
+  .task-item.status-pending{
+    border-left:3px solid var(--gold);
+    background:var(--gold-bg);
+    border-radius:0 4px 4px 0;
+  }
+  .task-item.status-pending:hover{background:#faebc8;}
+
+  /* Status toggle button — sits inline with task text, hover-reveal */
+  .task-status-btn{
+    background:none;border:none;cursor:pointer;font-size:0.78rem;
+    opacity:0;transition:opacity 0.15s;padding:0 2px;flex-shrink:0;
+    line-height:1;
+  }
+  .task-item:hover .task-status-btn{opacity:1;}
+  .task-item.status-inprogress .task-status-btn,
+  .task-item.status-pending    .task-status-btn{opacity:1;}
+
+  /* Status badge shown in task meta row */
+  .task-status-badge{
+    font-size:0.62rem;font-weight:700;padding:1px 7px;border-radius:8px;
+    white-space:nowrap;margin-left:2px;
+  }
+  .tsb-inprogress{background:var(--blue-light);color:var(--blue);}
+  .tsb-pending{background:var(--gold-bg);color:#a07000;border:1px solid #e0b840;}
+
+  /* Status dropdown menu */
+  .task-status-menu{
+    position:absolute;z-index:300;background:var(--white);
+    border:1.5px solid var(--border);border-radius:8px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);padding:4px 0;
+    min-width:160px;font-family:Arial,sans-serif;
+  }
+  .task-status-menu-item{
+    padding:8px 14px;font-size:0.83rem;cursor:pointer;display:flex;
+    align-items:center;gap:8px;color:var(--ink-mid);transition:background 0.1s;
+  }
+  .task-status-menu-item:hover{background:var(--blue-faint);}
+  .task-status-menu-item.active{font-weight:700;color:var(--blue);}
 </style>
 
   <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22John%20Petty%20Daily%20Planner%22%2C%22short_name%22%3A%22JP%20Planner%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f4f6fb%22%2C%22theme_color%22%3A%22%231a4480%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%2527http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%3D%25270%25200%2564%2564%2527%253E%253Crect%2520width%3D%252764%2527%2520height%3D%252764%2527%2520rx%3D%252712%2527%2520fill%3D%2527%25231a4480%2527%2F%253E%253Ctext%2520x%3D%252732%2527%2520y%3D%252745%2527%2520font-size%3D%252736%2527%2520text-anchor%3D%2527middle%2527%2520fill%3D%2527white%2527%253E%25F0%259F%258C%25B2%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%2264x64%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
@@ -1270,6 +1642,16 @@
 <!-- STREAK BANNER -->
 <div id="streak-banner"></div>
 
+<!-- MOVE TASK OVERLAY -->
+<div id="move-task-overlay">
+  <div id="move-task-box">
+    <div class="move-task-title">Move Task to Another List</div>
+    <div class="move-task-text" id="move-task-text"></div>
+    <div class="move-task-grid" id="move-task-grid"></div>
+    <button class="btn btn-ghost btn-sm" onclick="closeMoveTask()">Cancel</button>
+  </div>
+</div>
+
 <!-- ══ FIRST-RUN WELCOME / IMPORT SCREEN ══ -->
 <div id="welcome-overlay">
   <div id="welcome-box">
@@ -1362,6 +1744,8 @@
   <button onclick="showPage('journal',this)">✎ Journal</button>
   <button onclick="showPage('habits',this)">◎ Habits</button>
   <button onclick="showPage('para',this)">⬛ PARA</button>
+  <button onclick="showPage('accounts',this)">🚂 Accounts</button>
+  <button onclick="showPage('proposals',this)">📋 Proposals</button>
   <button onclick="showPage('followup',this)">🔔 Follow-Up</button>
   <button onclick="showPage('email',this)">✉ Comms</button>
   <button onclick="showPage('backup',this)">⇣ Backup</button>
@@ -1441,6 +1825,22 @@
     <div class="section">
       <div class="section-label" id="current-list-title">Today</div>
       <button class="btn btn-ghost btn-sm" id="bulk-mode-btn" onclick="enterBulkMode()" style="margin-bottom:6px;font-size:0.72rem;">☑ Select</button>
+      <div class="sort-btn-row">
+        <span style="font-size:0.7rem;color:var(--ink-faint);align-self:center;">Sort:</span>
+        <button class="sort-btn active" id="sort-btn-none"     onclick="sortTasks('none')">Default</button>
+        <button class="sort-btn"        id="sort-btn-priority" onclick="sortTasks('priority')">Priority</button>
+        <button class="sort-btn"        id="sort-btn-due"      onclick="sortTasks('due')">Due Date</button>
+        <button class="sort-btn"        id="sort-btn-alpha"    onclick="sortTasks('alpha')">A–Z</button>
+      </div>
+      <div class="quick-date-row" id="quick-date-row">
+        <span style="font-size:0.7rem;color:var(--ink-faint);align-self:center;">Quick date:</span>
+        <button class="quick-date-btn" onclick="setQuickDate(0)">Today</button>
+        <button class="quick-date-btn" onclick="setQuickDate(1)">Tomorrow</button>
+        <button class="quick-date-btn" onclick="setQuickDateFriday()">This Friday</button>
+        <button class="quick-date-btn" onclick="setQuickDate(7)">Next Week</button>
+        <button class="quick-date-btn" onclick="setQuickDate(30)">Next Month</button>
+        <button class="quick-date-btn" onclick="clearQuickDate()">✕ Clear</button>
+      </div>
       <div class="task-add-form" id="task-add-form-row">
         <input type="text" id="task-input" placeholder="Write a task…" onkeydown="if(event.key==='Enter')addTask()">
         <select class="pri-select MEDIUM" id="task-priority" onchange="updatePriSelect(this)">
@@ -1493,6 +1893,14 @@
       <div class="event-input-row" id="event-input-area" style="display:none">
         <input type="text" id="event-input" placeholder="Event description…" onkeydown="if(event.key==='Enter')addEvent()">
         <input type="time" id="event-time">
+        <select id="event-type" class="event-type-select" title="Event type">
+          <option value="default">📅 General</option>
+          <option value="ies">📐 IES/Standards</option>
+          <option value="railroad">🚂 Railroad</option>
+          <option value="customer">🤝 Customer</option>
+          <option value="internal">👥 Internal</option>
+          <option value="personal">🏠 Personal</option>
+        </select>
         <select id="event-recur" class="event-recur-select" title="Repeat"><option value="none">One-time</option><option value="weekly">Weekly</option><option value="biweekly">Bi-weekly</option><option value="monthly">Monthly</option></select><button class="btn btn-sm" onclick="addEvent()">Add Event</button>
       </div>
       <div id="event-list"></div>
@@ -1579,6 +1987,10 @@
     </div>
 
     <div class="section">
+      <div class="section-label">Writing Activity
+        <span style="font-size:0.7rem;font-weight:400;color:var(--ink-faint);margin-left:6px;">last 30 days</span>
+      </div>
+      <div class="journal-sparkline" id="journal-sparkline" title="Words written per day"></div>
       <div class="section-label">All Entries — Chronological</div>
       <input type="text" id="journal-search-input" class="journal-search-input"
         placeholder="&#128269;  Search journal entries&#8230;" oninput="searchJournal(this.value)" style="margin-bottom:8px;">
@@ -1710,6 +2122,27 @@
 
       <!-- R: Resources -->
       <div class="para-panel" id="para-panel-r">
+        <!-- ALIA-V Quick Reference -->
+        <details style="margin-bottom:12px;background:var(--blue-faint);border-radius:6px;overflow:hidden;">
+          <summary style="padding:10px 14px;font-size:0.78rem;font-weight:700;color:var(--blue);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;">
+            📐 ALIA-V Quick Reference <span style="font-size:0.65rem;font-weight:400;color:var(--ink-faint);margin-left:auto;">tap to expand</span>
+          </summary>
+          <div style="padding:10px 14px;font-size:0.78rem;color:var(--ink-mid);line-height:1.7;">
+            <strong style="color:var(--blue);">Scoring Tiers</strong><br>
+            Tier 1 Basic · Tier 2 Adaptive · Tier 3 Visibility Eng · Tier 4 Predictive<br><br>
+            <strong style="color:var(--blue);">Key Metrics</strong><br>
+            S/P Ratio · mel-DER/mel-EDI · Vertical Illuminance (Ev) · Veiling Luminance (Lv) · Luminous Carpet · Flux-on-Demand (FoD)<br><br>
+            <strong style="color:var(--blue);">Controls &amp; Protocols</strong><br>
+            D4i/DALI-2 · Zhaga Book 18 · BUG Ratings (TM-15-20) · NEMA 7-pin · DLC-LUNA · UbiVu · nLight AIR · ROAM · Cell Connect<br><br>
+            <strong style="color:var(--blue);">Standards References</strong><br>
+            IES RP-8-25 · IES RP-43 · IES RP-6 · AASHTO · ASHRAE 90.1 · FHWA · IIJA/BABA · Dark Skies LZ-0 to LZ-4<br><br>
+            <strong style="color:var(--blue);">Railroad Standards</strong><br>
+            FRA · AREMA · AAR · Class I: UP · BNSF · CSX · NS · CN · CPKC · Amtrak
+          </div>
+        </details>
+        <div class="section-label" style="margin:10px 0 6px;">ALIA-V Document Progress</div>
+        <div id="alia-progress-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:4px;" onclick="editAliaProgress()">✏ Update Status</button>
         <input type="text" id="para-res-search" placeholder="🔍  Search resources by title or tag…" oninput="filterParaResources(this.value)">
         <div id="para-res-list"></div>
         <div class="para-add-res">
@@ -1724,6 +2157,14 @@
       </div>
 
       <!-- Ar: Archives -->
+      <div class="para-panel" id="para-panel-timeline">
+        <div class="section-label" style="margin-bottom:10px;">Project Timeline</div>
+        <div class="timeline-wrap">
+          <div class="timeline-header" id="timeline-header"></div>
+          <div id="timeline-rows"></div>
+        </div>
+      </div>
+
       <div class="para-panel" id="para-panel-ar">
         <p style="font-size:0.82rem;color:var(--ink-light);margin-bottom:12px;">Completed projects and inactive areas. Restore anything to bring it back to active status.</p>
         <div id="para-arch-list"></div>
@@ -1733,13 +2174,64 @@
   </div>
 
   <!-- ══════════════════ EMAIL PROCESSOR ══════════════════ -->
+  <!-- ══════════════════ RAILROAD ACCOUNTS ══════════════════ -->
+  <div id="page-accounts" class="page">
+    <div class="section">
+      <p style="font-size:0.83rem;color:var(--ink-light);margin-bottom:10px;line-height:1.6;">
+        Your 7 Class I railroad accounts — live pipeline status from Follow-Ups, Proposals, and Contact Log.
+      </p>
+      <div class="section-label" style="margin-bottom:6px;">IGI Pipeline Dashboard</div>
+      <div id="igi-dashboard" style="margin-bottom:14px;"></div>
+      <div class="section-label" style="margin-bottom:6px;">Account Cards</div>
+      <div id="accounts-list"></div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="editAccountNotes()">⚙ Edit Account Notes</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════ PROPOSAL TRACKER ══════════════════ -->
+  <div id="page-proposals" class="page">
+    <div class="section">
+      <!-- Add proposal form -->
+      <div class="proposal-add-form">
+        <div class="section-label" style="margin-bottom:10px;">Add Proposal / Opportunity</div>
+        <input type="text" class="proposal-input" id="prop-name" placeholder="Project / opportunity name…">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <input type="text" class="proposal-input" style="flex:1;min-width:120px;margin:0;" id="prop-account" placeholder="Account / railroad…">
+          <input type="text" class="proposal-input" style="flex:1;min-width:100px;margin:0;" id="prop-value" placeholder="Est. value ($)…">
+          <input type="date" class="proposal-input" style="width:140px;margin:0;" id="prop-due">
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <select class="fu-select" id="prop-stage">
+            <option value="identified">🔍 Identified</option>
+            <option value="quoted">💲 Quoted</option>
+            <option value="submitted">📤 Submitted</option>
+            <option value="followup">📞 Follow-Up</option>
+            <option value="won">✓ Won</option>
+            <option value="lost">✕ Lost</option>
+          </select>
+          <button class="btn" onclick="addProposal()">+ Add</button>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="fu-filter-row">
+        <button class="fu-filter-btn active" id="prop-filter-active" onclick="setPropFilter('active')">Active</button>
+        <button class="fu-filter-btn" id="prop-filter-all" onclick="setPropFilter('all')">All</button>
+        <button class="fu-filter-btn" id="prop-filter-won" onclick="setPropFilter('won')">✓ Won</button>
+        <button class="fu-filter-btn" id="prop-filter-railroad" onclick="setPropFilter('railroad')">🚂 Railroad</button>
+      </div>
+
+      <div id="proposals-list"></div>
+    </div>
+  </div>
+
   <!-- ══════════════════ FOLLOW-UP SYSTEM ══════════════════ -->
   <div id="page-followup" class="page">
     <div class="section">
       <div class="fu-add-form">
         <div class="section-label" style="margin-bottom:12px;">Add Follow-Up</div>
         <div class="fu-form-row">
-          <input type="text" class="fu-input wide" id="fu-contact" placeholder="Contact name…">
+          <input type="text" class="fu-input wide" id="fu-contact" placeholder="Contact name…" list="fu-contact-list"><datalist id="fu-contact-list"></datalist
           <input type="text" class="fu-input med" id="fu-account" placeholder="Account / Railroad…">
           <select class="fu-select" id="fu-type">
             <option value="call">📞 Call</option>
@@ -1780,6 +2272,7 @@
     <div class="section" style="margin-top:4px;">
       <div class="section-label">Completed
         <button class="btn btn-ghost btn-sm" style="margin-left:8px;font-size:0.68rem;" onclick="clearFuHistory()">Clear History</button>
+        <button class="fu-export-btn" style="margin-left:6px;" onclick="exportFollowUps()">Export CSV</button>
       </div>
       <div id="fu-history-list"></div>
     </div>
@@ -1806,6 +2299,11 @@
       </div>
 
       <!-- Context strip (changes per channel) -->
+      <div class="comms-tab-pills">
+        <button class="comms-pill active" id="cpill-compose"   onclick="switchCommsPill('compose')">✉ Compose</button>
+        <button class="comms-pill"        id="cpill-templates" onclick="switchCommsPill('templates')">📝 Templates</button>
+        <button class="comms-pill"        id="cpill-history"   onclick="switchCommsPill('history')">🕐 History</button>
+      </div>
       <div id="comms-context-strip" class="comms-context-strip">
         <strong style="color:var(--blue);">Email Co-Pilot</strong> &nbsp;·&nbsp;
         Paste any email or thread. Claude classifies it, extracts actions, drafts a reply in your voice, and routes to PARA.
@@ -1823,6 +2321,15 @@
       </div>
 
       <!-- Quick presets (changes per channel) -->
+      <!-- Tone selector -->
+      <div class="tone-selector" id="tone-selector">
+        <span style="font-size:0.7rem;color:var(--ink-faint);align-self:center;">Reply tone:</span>
+        <button class="tone-btn active" id="tone-formal"      onclick="setCommsTone('formal')">Formal</button>
+        <button class="tone-btn"         id="tone-collab"     onclick="setCommsTone('collab')">Collaborative</button>
+        <button class="tone-btn"         id="tone-technical"  onclick="setCommsTone('technical')">Technical</button>
+        <button class="tone-btn"         id="tone-brief"      onclick="setCommsTone('brief')">Brief</button>
+      </div>
+
       <div id="comms-presets-row" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
         <span style="font-size:0.72rem;color:var(--ink-faint);align-self:center;margin-right:4px;">Quick load:</span>
         <button class="email-preset-btn" onclick="loadEmailPreset('rfp')">RFP / RFI</button>
@@ -1876,6 +2383,14 @@
 
     </div>
 
+    <!-- Template Library -->
+    <div class="section" style="margin-top:4px;">
+      <div class="section-label">Response Template Library</div>
+      <input type="text" class="template-search-input" id="template-search"
+        placeholder="&#128269;  Search templates…" oninput="filterTemplates(this.value)">
+      <div id="template-list"></div>
+    </div>
+
     <!-- History -->
     <div class="section" style="margin-top:4px;">
       <div class="section-label" id="comms-history-label">Recent Communications Processed
@@ -1889,6 +2404,14 @@
   <!-- ══════════════════ BACKUP ══════════════════ -->
   <div id="page-backup" class="page">
     <!-- ══ QUICK CONTACT LOG ══ -->
+    <!-- SALES ACTIVITY DASHBOARD -->
+    <div class="section">
+      <div class="section-label">Sales Activity — This Week</div>
+      <div class="sales-dash-grid" id="sales-dash-grid"></div>
+      <div class="section-label" style="margin-top:4px;">Recent Activity</div>
+      <div id="sales-activity-feed" style="max-height:200px;overflow-y:auto;"></div>
+    </div>
+
     <div class="section">
       <div class="section-label">Quick Contact Log</div>
       <p style="font-size:0.83rem;color:var(--ink-light);margin-bottom:12px;line-height:1.6;">Log calls, emails, meetings, and texts with customers, colleagues, and railroad contacts. Feeds into your bi-weekly sales report.</p>
@@ -1905,6 +2428,14 @@
       </div>
       <div id="contact-log-list"></div>
       <button class="btn btn-ghost btn-sm" style="margin-top:8px;" onclick="exportContactLog()">Export Log</button>
+    </div>
+
+    <!-- CONTACT FREQUENCY TRACKER -->
+    <div class="section" style="margin-top:4px;">
+      <div class="section-label">Contact Frequency
+        <span style="font-size:0.7rem;font-weight:400;color:var(--ink-faint);margin-left:6px;">flag if 30+ days since last touch</span>
+      </div>
+      <div id="freq-tracker-list"></div>
     </div>
 
     <!-- ══ WEEKLY SNAPSHOT ══ -->
@@ -1939,6 +2470,24 @@
       <p style="font-size:0.83rem;color:var(--ink-light);margin-bottom:12px;line-height:1.6;">An automatic log of your daily activity — tasks, journal entries, and habit completions.</p>
       <div id="changelog-list" style="max-height:240px;overflow-y:auto;"></div>
     </div>
+    <!-- TASK COMPLETION TREND -->
+    <div class="section" style="margin-top:20px;">
+      <div class="section-label">Task Completion — Last 30 Days</div>
+      <div class="trend-chart-wrap">
+        <div class="trend-bars" id="trend-bars"></div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:20px;">
+      <div class="section-label">Bi-Weekly Sales Report Builder</div>
+      <p style="font-size:0.83rem;color:var(--ink-light);margin-bottom:8px;line-height:1.6;">14-day activity summary from contact log, tasks, and proposals. Copy directly into Outlook.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" onclick="generateBiweeklyReport()">📊 Build Report</button>
+        <button class="btn btn-ghost" onclick="copyBiweeklyReport()">📋 Copy</button>
+      </div>
+      <textarea class="report-output" id="biweekly-report-output" readonly placeholder="Click Build Report to generate your bi-weekly summary…"></textarea>
+    </div>
+
     <div class="section" style="margin-top:20px;">
       <div class="section-label">Planner Health Check</div>
       <p style="font-size:0.83rem;color:var(--ink-light);margin-bottom:12px;line-height:1.6;">A quick audit of your planner — see where things may be drifting.</p>
@@ -2040,6 +2589,54 @@
           <div id="eod-settings-status" style="font-size:0.72rem;color:var(--green);margin-top:6px;"></div>
         </div>
         <div class="settings-card" style="flex:1;min-width:200px;">
+          <div class="settings-card-title">☀ Auto Morning Brief</div>
+          <p style="font-size:0.84rem;color:var(--ink-light);margin-bottom:10px;line-height:1.5;">Auto-generate your morning brief when you open the planner.</p>
+          <div class="eod-settings-row">
+            <input type="checkbox" id="auto-brief-toggle" onchange="setAutoBrief(this.checked)">
+            <label for="auto-brief-toggle">Enable auto-brief on open</label>
+          </div>
+          <div id="auto-brief-status" style="font-size:0.72rem;color:var(--green);margin-top:6px;"></div>
+        </div>
+        <div class="settings-card" style="flex:1 1 100%;min-width:280px;">
+          <div class="settings-card-title">🎨 Color Theme</div>
+          <p style="font-size:0.84rem;color:var(--ink-light);margin-bottom:10px;line-height:1.5;">Choose your planner's color motif. Gold, green, and red accent colors stay the same.</p>
+          <div class="theme-picker" id="theme-picker">
+            <div class="theme-option">
+              <div class="theme-swatch active" id="swatch-blue" style="background:#1a4480;" onclick="setTheme('blue')" title="Cascadia Blue"></div>
+              <div class="theme-label">Blue</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-green" style="background:#2d6a4f;" onclick="setTheme('green')" title="Cascadia Green"></div>
+              <div class="theme-label">Green</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-teal" style="background:#0d6e7a;" onclick="setTheme('teal')" title="Pacific Teal"></div>
+              <div class="theme-label">Teal</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-slate" style="background:#3d4f6b;" onclick="setTheme('slate')" title="Slate Gray"></div>
+              <div class="theme-label">Slate</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-burgundy" style="background:#6b1f3a;" onclick="setTheme('burgundy')" title="Burgundy"></div>
+              <div class="theme-label">Burgundy</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-copper" style="background:#8b4a1a;" onclick="setTheme('copper')" title="Copper"></div>
+              <div class="theme-label">Copper</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-purple" style="background:#5b2d8b;" onclick="setTheme('purple')" title="Royal Purple"></div>
+              <div class="theme-label">Purple</div>
+            </div>
+            <div class="theme-option">
+              <div class="theme-swatch" id="swatch-orange" style="background:#c45c1a;" onclick="setTheme('orange')" title="Burnt Orange"></div>
+              <div class="theme-label">Orange</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card" style="flex:1;min-width:200px;">
           <div class="settings-card-title">🌙 Dark Mode</div>
           <p>Switch between light and dark color themes. Easier on the eyes for evening use.</p>
           <button class="settings-upload-btn" id="dark-mode-btn" onclick="toggleDarkMode()">Enable Dark Mode</button>
@@ -2089,7 +2686,18 @@
   <!-- ══════════════════ MORNING BRIEF ══════════════════ -->
   <div id="page-brief" class="page">
 
-    <!-- Status bar -->
+    <div class="section" style="margin-bottom:4px;">
+      <div class="section-label">☀ Auto-Generate My Day</div>
+      <p style="font-size:0.83rem;color:var(--ink-light);margin-bottom:8px;line-height:1.6;">Builds your complete morning briefing from today's tasks, follow-ups, calendar, and railroad pipeline. No API needed.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" onclick="generateMorningBrief()">Generate</button>
+        <button class="btn btn-ghost" onclick="copyBriefToClipboard()">📋 Copy</button>
+        <button class="btn btn-ghost" onclick="clearBriefOutput()">✕ Clear</button>
+      </div>
+      <textarea class="brief-output" id="brief-auto-output" readonly placeholder="Click Generate to build your morning briefing…"></textarea>
+    </div>
+
+        <!-- Status bar -->
     <div class="brief-status-bar">
       <span><span class="brief-dot brief-dot-green"></span>AI READY</span>
       <span><span class="brief-dot brief-dot-gold"></span>PASTE-IN MODE</span>
@@ -2298,6 +2906,14 @@ const JOURNAL_PROMPTS = [
 let _promptIdx = Math.floor(Math.random()*JOURNAL_PROMPTS.length);
 
 // ── Runtime state variables — declared early ──
+// ── Theme system — declared early ──
+var THEME_KEY = 'plannerTheme';
+var THEME_COLORS = {
+  blue:'#1a4480', green:'#2d6a4f', teal:'#0d6e7a',
+  slate:'#3d4f6b', burgundy:'#6b1f3a', copper:'#8b4a1a',
+  purple:'#5b2d8b', orange:'#c45c1a'
+};
+
 // ── Comms Co-Pilot & Bridge — declared early ──
 const BRIDGE_KEY = 'bridge_railroad_sync';
 const EMAIL_HISTORY_KEY = 'plannerEmailHistory';
@@ -2306,6 +2922,10 @@ let _vmRecog = null, _vmListening = false;
 // CONTACT_LOG_KEY moved to early declarations
 var _timerInterval = null, _timerSeconds = 1500, _timerTotal = 1500, _timerRunning = false, _timerTask = '';
 var _fuToastTimer = null, _fuToastData = null;
+var _moveTaskData = null;
+var _commsTone = 'formal';
+var _propFilter = 'active';
+// THEME_KEY moved to early declarations
 var _bulkMode = false, _bulkSelected = {};
 var _bdSearchQuery = '';
 var _commsHistoryQuery = '';
@@ -2370,6 +2990,8 @@ function loadState(){
       if(!state.yearlyHabits) state.yearlyHabits = [];
       if(!state.yearlyHabitLog) state.yearlyHabitLog = {};
       if(!state.followUps) state.followUps = [];
+      if(!state.proposals) state.proposals = [];
+      if(!state._accountNotes) state._accountNotes = {};
       if(!state.projects) state.projects = [];
     }
   }catch(e){}
@@ -2498,20 +3120,23 @@ function showPage(name,btn){
   document.getElementById('page-'+name).classList.add('active');
   if(btn) btn.classList.add('active');
   if(name==='calendar') renderCalendar();
-  if(name==='journal') renderJournal();
+  if(name==='journal'){ renderJournal(); renderJournalSparkline(); }
   if(name==='habits') renderHabits();
   if(name==='tasks'){ renderTasks(); renderTop3(); }
   if(name==='braindump') renderInbox();
-  if(name==='para') renderPara();
-  if(name==='settings'){ syncBgUI(); updateAutoBackupStatus(); syncEodSettingsUI(); }
+  if(name==='para'){ renderPara(); renderAliaProgress(); }
+  if(name==='settings'){ syncBgUI(); updateAutoBackupStatus(); syncEodSettingsUI(); syncThemeSwatches(localStorage.getItem('plannerTheme')||'blue'); syncAutoBriefUI(); }
   if(name==='tasks'){ renderDashboard(); renderBridgeWidget(); }
   if(name==='habits'){ renderWeeklyHabits(); renderBiweeklyHabits(); renderMonthlyHabits(); renderYearlyHabits(); updateHabitNudge(); }
   if(name==='journal'){ renderWeeklyStats(); renderJournalPrompt(); injectParaIntoWeeklyReview(); }
-  if(name==='followup'){ renderFollowUps(); }
-  if(name==='backup'){ renderHealthCheck(); renderChangelog(); renderBridgePanel(); renderContactLog(); generateSnapshotStats(document.getElementById('snapshot-grid')); }
+  if(name==='accounts'){ renderAccounts(); renderIGIDashboard(); }
+  if(name==='proposals'){ renderProposals(); }
+  if(name==='followup'){ renderFollowUps(); updateFuContactAutocomplete(); }
+  if(name==='backup'){ renderHealthCheck(); renderChangelog(); renderBridgePanel(); renderContactLog(); generateSnapshotStats(document.getElementById('snapshot-grid')); renderSalesDash(); renderFreqTracker(); renderTrendChart(); }
   if(name==='email'){
     renderEmailHistory();
     switchCommsChannel(_currentChannel||'email');
+    renderTemplates();
   }
   if(name==='brief'){ briefOnShow(); }
 }
@@ -2521,27 +3146,122 @@ function updatePriSelect(sel){ sel.className='pri-select '+sel.value; }
 // TOP 3 TODAY
 // ═══════════════════════════════════════════════════════════════
 function renderTop3(){
-  const container=document.getElementById('top3-slots');
-  container.innerHTML='';
-  const all=[];
-  Object.entries(state.lists).forEach(([ln,arr])=>arr.filter(t=>!t.done).forEach(t=>all.push({ln,t})));
-  for(let i=0;i<3;i++){
-    const slot=document.createElement('div'); slot.className='top3-slot';
-    const num=document.createElement('div'); num.className='top3-num'; num.textContent=i+1;
-    const sel=document.createElement('select'); sel.className='top3-select';
-    const emp=document.createElement('option'); emp.value=''; emp.textContent='— choose a task —'; sel.appendChild(emp);
-    all.forEach(({ln,t})=>{
-      const o=document.createElement('option');
-      o.value=t.text+'||'+ln;
-      o.textContent=`${t.text}  [${ln}]`;
-      if(state.top3[i]===t.text+'||'+ln) o.selected=true;
-      sel.appendChild(o);
-    });
-    sel.addEventListener('change',e=>{ state.top3[i]=e.target.value; saveState(); });
-    slot.appendChild(num); slot.appendChild(sel);
-    container.appendChild(slot);
+  var container = document.getElementById('top3-slots');
+  if(!container) return;
+  container.innerHTML = '';
+  ensureTop3Done();
+
+  var all = [];
+  Object.entries(state.lists).forEach(function(entry){
+    var ln = entry[0], arr = entry[1];
+    arr.forEach(function(t){ if(!t.done) all.push({ln:ln, t:t}); });
+  });
+
+  for(var i=0;i<3;i++){
+    (function(idx){
+      var slot = document.createElement('div');
+      slot.className = 'top3-slot';
+
+      // Number badge
+      var num = document.createElement('div');
+      num.className = 'top3-num';
+      num.textContent = idx + 1;
+
+      // Completion checkbox
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'top3-check';
+      chk.checked = state.top3done[idx] || false;
+      chk.title = 'Mark complete';
+      chk.onchange = function(){ toggleTop3Done(idx); };
+
+      // Custom dropdown wrapper
+      var dd = document.createElement('div');
+      dd.className = 'top3-dropdown';
+      dd.id = 'top3-dd-' + idx;
+
+      // Selected display
+      var selectedVal = state.top3[idx] || '';
+      var selectedText = selectedVal ? selectedVal.replace(/\|\|.*/, '') : '';
+      var ddSel = document.createElement('div');
+      ddSel.className = 'top3-dd-selected' + (state.top3done[idx] ? ' done-strike' : '');
+      ddSel.innerHTML = '<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'
+        + (selectedText || ('<em style="opacity:0.55">— choose from ' + all.length + ' tasks —</em>'))
+        + '</span><span class="top3-dd-arrow">&#9660;</span>';
+
+      // Dropdown list
+      var ddList = document.createElement('div');
+      ddList.className = 'top3-dd-list';
+      ddList.id = 'top3-ddlist-' + idx;
+
+      // Clear option
+      var clearItem = document.createElement('div');
+      clearItem.className = 'top3-dd-item placeholder';
+      clearItem.textContent = '— clear slot —';
+      clearItem.onclick = function(){
+        state.top3[idx] = '';
+        state.top3done[idx] = false;
+        saveState(); renderTop3();
+      };
+      ddList.appendChild(clearItem);
+
+      // Group by list
+      var byList = {};
+      all.forEach(function(item){
+        if(!byList[item.ln]) byList[item.ln] = [];
+        byList[item.ln].push(item);
+      });
+
+      Object.keys(byList).forEach(function(ln){
+        // List label
+        var lbl = document.createElement('div');
+        lbl.className = 'top3-dd-list-label';
+        lbl.textContent = ln;
+        ddList.appendChild(lbl);
+
+        byList[ln].forEach(function(item){
+          var key = item.t.text + '||' + item.ln;
+          var di = document.createElement('div');
+          di.className = 'top3-dd-item' + (selectedVal === key ? ' selected' : '');
+          di.textContent = item.t.text;
+          di.onclick = (function(k, txt){
+            return function(){
+              state.top3[idx] = k;
+              state.top3done[idx] = false;
+              saveState(); renderTop3();
+            };
+          })(key, item.t.text);
+          ddList.appendChild(di);
+        });
+      });
+
+      // Toggle dropdown open/close
+      ddSel.onclick = function(e){
+        e.stopPropagation();
+        // Close all other open dropdowns
+        document.querySelectorAll('.top3-dd-list.open').forEach(function(el){
+          if(el.id !== ddList.id) el.classList.remove('open');
+        });
+        ddList.classList.toggle('open');
+      };
+
+      dd.appendChild(ddSel);
+      dd.appendChild(ddList);
+      slot.appendChild(num);
+      slot.appendChild(chk);
+      slot.appendChild(dd);
+      container.appendChild(slot);
+    })(i);
   }
+
+  // Close dropdowns when clicking outside
+  document.onclick = function(){ 
+    document.querySelectorAll('.top3-dd-list.open').forEach(function(el){
+      el.classList.remove('open');
+    });
+  };
 }
+
 
 // ═══════════════════════════════════════════════════════════════
 // TASKS
@@ -2640,7 +3360,7 @@ function renderTasks(){
 function buildTaskRow(task,listName,i,isFutureTask,isMaster){
   const row=document.createElement('div');
   const hasNote=task.note&&task.note.trim().length>0;
-  row.className='task-item'+(isFutureTask?' task-future':'')+(hasNote?' task-has-note':'');
+  row.className='task-item'+(isFutureTask?' task-future':'')+(hasNote?' task-has-note':'')+(task.status?' status-'+task.status:'');
   if(typeof _bulkMode!=='undefined'&&_bulkMode&&!isFutureTask&&!isMaster){var _cb=document.createElement('input');_cb.type='checkbox';_cb.className='task-select-cb';var _key=listName+'||'+i;_cb.dataset.key=_key;_cb.checked=!!(_bulkSelected&&_bulkSelected[_key]);_cb.onchange=(function(k){return function(){toggleBulkSelect(k,this.checked);};}(_key));row.appendChild(_cb);}
   const pri=task.priority||'MEDIUM';
   const priLabel={HIGH:'High',MEDIUM:'Med',LOW:'Low'}[pri];
@@ -2651,6 +3371,7 @@ function buildTaskRow(task,listName,i,isFutureTask,isMaster){
     const over=!task.done&&task.dueDate<today;
     const isTomorrow=!task.done&&task.dueDate===tomorrowKey;
     const extraBadge=isTomorrow?'<span class="due-tomorrow-badge">Due Tomorrow</span>':'';
+    const countdownBadge=getDueBadgeHtml(task,today);
     dueHtml=`<span class="task-due${over?' overdue':isTomorrow?' tomorrow':''}">${over?'⚠ Overdue · ':''}Due ${formatDate(task.dueDate)}</span>${extraBadge}`;
   }
   const recurBadge=task.recurring?`<span class="recurring-badge">🔁 ${task.recurring}</span>`:'';
@@ -2671,13 +3392,15 @@ function buildTaskRow(task,listName,i,isFutureTask,isMaster){
         <button class="task-note-toggle" title="${noteTitle}" onclick="toggleTaskNote('${listName}',${i})">${noteIcon}</button>
         <button class="task-note-toggle" title="Edit task" onclick="startEditTask('${listName}',${i})" style="font-size:0.75rem;">✏</button>
         <button class="task-fu-btn" title="Create follow-up from this task" onclick="taskToFuManual('${listName}',${i})">→ FU</button>
+        <button class="task-move-btn" title="Move to another list" onclick="openMoveTask('${listName}',${i})">⇄ Move</button>
+        <button class="task-status-btn" title="Set task status" onclick="openTaskStatusMenu(event,'${listName}',${i})">${task.status==='inprogress'?'⚡':task.status==='pending'?'⏳':'◌'}</button>
       </div>
       <div id="task-edit-${safeList}-${i}" style="display:none;align-items:center;gap:4px;">
         <input class="task-edit-input" value="${escHtml(task.text)}" onkeydown="if(event.key==='Enter')saveEditTask('${listName}',${i});if(event.key==='Escape')cancelEditTask('${listName}',${i});">
         <button class="task-edit-save" onclick="saveEditTask('${listName}',${i})">Save</button>
         <button class="task-edit-cancel" onclick="cancelEditTask('${listName}',${i})">Cancel</button>
       </div>
-      <div class="task-meta">${dueHtml}${recurBadge}${createdHtml}</div>
+      <div class="task-meta">${dueHtml}${recurBadge}${createdHtml}${task.status==='inprogress'?'<span class="task-status-badge tsb-inprogress">⚡ In Progress</span>':task.status==='pending'?'<span class="task-status-badge tsb-pending">⏳ Pending / VM</span>':''}</div>
       <div class="task-meta" style="margin-top:3px;">
         <select style="font-family:Arial,sans-serif;font-size:0.68rem;border:1px solid var(--border-light);border-radius:3px;padding:2px 4px;background:var(--white);color:var(--ink-faint);outline:none;cursor:pointer;" onchange="setTaskRecurring('${listName}',${i},this.value)">
           <option value="">🔁 No repeat</option>
@@ -3103,6 +3826,7 @@ function ensurePara(){
 let _paraTab='p';
 
 function switchParaTab(tab){
+  if(tab==='timeline') renderTimeline();
   _paraTab=tab;
   ['p','a','r','ar'].forEach(t=>{
     const btn=document.getElementById('ptab-'+t);
@@ -3490,7 +4214,8 @@ function renderAll(){
 loadState();
 loadBgSettings();
 loadDarkMode();
-document.getElementById('header-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) + '  • rev2404202026';
+loadTheme();
+document.getElementById('header-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) + '  •  rev28';
 updatePriSelect(document.getElementById('task-priority'));
 renderTasks();
 renderTop3();
@@ -3504,12 +4229,15 @@ loadFontSize();
 checkRecurringTasks();
 checkAutoBackup();
 renderWatermark();
+// Re-render Top3 after full init to ensure tasks are loaded
+setTimeout(function(){ renderTop3(); }, 500);
 ensurePara();
 ensureWeeklyHabits();
 ensureBiweeklyHabits();
 ensureMonthlyHabits();
 ensureYearlyHabits();
 ensureFollowUps();
+ensureProposals();
 checkRecurringFollowUps();
 seedAliaResources();
 ensureTop3Done();
@@ -3774,7 +4502,7 @@ function flashSaved(){
 // ═══════════════════════════════════════════════════════════════
 // KEYBOARD SHORTCUTS  (Ctrl/Cmd + 1-8 for tabs)
 // ═══════════════════════════════════════════════════════════════
-var TAB_KEYS = ['tasks','calendar','braindump','journal','habits','para','followup','email','backup','brief','settings'];
+var TAB_KEYS = ['tasks','calendar','braindump','journal','habits','para','accounts','proposals','followup','email','backup','brief','settings'];
 document.addEventListener('keydown', e => {
   const mod = e.ctrlKey || e.metaKey;
   if(mod && e.key >= '1' && e.key <= '8'){
@@ -5878,6 +6606,14 @@ function buildAndCopyPrompt() {
   else if (/how do|what is|calculation|calc|lumen|footcandle|uniformity|layout|design|technical/i.test(input)) emailType = 'technical';
   else if (/internal|colleague|team|rep|territory|joint call|training/i.test(input)) emailType = 'internal';
 
+  // Apply tone modifier
+  var toneInstructions = {
+    formal:    'Write in a formal, professional tone. Use proper salutations and closings.',
+    collab:    'Write in a collaborative, collegial tone. Warm but professional. Use first names.',
+    technical: 'Write with technical depth. Include specific standards references, product specifications, and engineering details.',
+    brief:     'Be extremely brief. 2-4 sentences maximum. No formal salutations or closings. Get to the point immediately.'
+  };
+  var toneNote = toneInstructions[_commsTone] || toneInstructions.formal;
   var typeNotes = {
     rfp:       'This is an RFP/RFI/quote request. Focus on: scope, submittal requirements, competitive positioning, relevant product lines, BABA/IIJA compliance if applicable.',
     railroad:  'This involves railroad/rail infrastructure. Focus on: which railroad, IGI sales strategy, yard lighting standards, key contacts, relevant Holophane products.',
@@ -5890,6 +6626,7 @@ function buildAndCopyPrompt() {
   var typeContext = typeNotes[emailType] || typeNotes.customer;
 
   var prompt = jpContext
+    + '\n\nTONE INSTRUCTION: ' + toneNote
     + '\n\nEMAIL CONTEXT: ' + typeContext
     + '\n\nAnalyze the email below and respond with ONLY a valid JSON object.'
     + '\nNo markdown, no preamble, no explanation. Raw JSON only.\n\n'
@@ -7212,6 +7949,7 @@ function renderFollowUps(){
       + '<button class="fu-btn-defer" onclick="deferFu(\'' + fu.id + '\')">📅 Defer</button>'
       + '<button class="fu-btn-task" onclick="fuToTask(\'' + fu.id + '\')">→ Task</button>'
       + '<button class="fu-btn-snooze" onclick="snoozeFu(\'' + fu.id + '\')" title="Snooze">💤 Snooze</button>'
+      + '<button class="fu-btn-email" onclick="fuToEmailDraft(\'' + fu.id + '\')" title="Draft email">📧 Email</button>'
       + '<button class="fu-btn-edit" onclick="editFu(\'' + fu.id + '\')">✏ Edit</button>'
       + '<button class="fu-btn-del" onclick="deleteFu(\'' + fu.id + '\')" title="Delete">✕</button>'
       + '</div></div></div>';
@@ -7637,7 +8375,7 @@ async function runMorningBrief(){
 
   try{
     var response=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+      method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
     });
     var data=await response.json();
@@ -8311,6 +9049,1180 @@ function welcomeImportBackup(event){
     if(progress){ progress.style.color='var(--pri-high)'; progress.textContent='Could not read file. Please try again.'; }
   };
   reader.readAsText(file);
+}
+
+
+// =================================================================
+// COLOR THEME SYSTEM
+// =================================================================
+// THEME_KEY and THEME_COLORS moved to top of script
+
+// THEME_COLORS moved to early declarations
+
+function setTheme(theme){
+  // Apply to :root data-theme attribute
+  document.documentElement.setAttribute('data-theme', theme === 'blue' ? '' : theme);
+  localStorage.setItem(THEME_KEY, theme);
+  syncThemeSwatches(theme);
+}
+
+function loadTheme(){
+  var saved = localStorage.getItem(THEME_KEY) || 'blue';
+  document.documentElement.setAttribute('data-theme', saved === 'blue' ? '' : saved);
+  syncThemeSwatches(saved);
+}
+
+function syncThemeSwatches(active){
+  Object.keys(THEME_COLORS).forEach(function(t){
+    var sw = document.getElementById('swatch-' + t);
+    if(sw) sw.classList.toggle('active', t === active);
+  });
+}
+
+
+// =================================================================
+// TASK MOVE — move any task to any other list
+// =================================================================
+// _moveTaskData moved to early declarations
+
+function openMoveTask(listName, idx){
+  var task = state.lists[listName] && state.lists[listName][idx];
+  if(!task) return;
+  _moveTaskData = { listName:listName, index:idx, task:task };
+
+  // Show task text
+  var textEl = document.getElementById('move-task-text');
+  if(textEl) textEl.textContent = task.text;
+
+  // Build list grid — all lists except current
+  var grid = document.getElementById('move-task-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+
+  var allLists = Object.keys(state.lists);
+  // Put common lists first
+  var priority = ['Today','This Week','Railroad IGI','Someday','Personal','IES'];
+  var ordered  = priority.filter(function(l){ return allLists.indexOf(l) !== -1; });
+  allLists.forEach(function(l){ if(ordered.indexOf(l) === -1) ordered.push(l); });
+
+  ordered.forEach(function(ln){
+    var btn = document.createElement('button');
+    btn.className = 'move-task-list-btn' + (ln === listName ? ' current' : '');
+    btn.innerHTML = (ln === listName ? '✓ ' : '') + ln;
+    if(ln !== listName){
+      btn.onclick = function(){ confirmMoveTask(ln); };
+    }
+    grid.appendChild(btn);
+  });
+
+  // Option to create a new list
+  var newBtn = document.createElement('button');
+  newBtn.className = 'move-task-list-btn';
+  newBtn.textContent = '+ New list…';
+  newBtn.onclick = function(){
+    var newList = prompt('New list name:');
+    if(!newList || !newList.trim()) return;
+    newList = newList.trim();
+    if(!state.lists[newList]) state.lists[newList] = [];
+    confirmMoveTask(newList);
+  };
+  grid.appendChild(newBtn);
+
+  document.getElementById('move-task-overlay').classList.add('visible');
+}
+
+function confirmMoveTask(targetList){
+  if(!_moveTaskData) return;
+  var src  = _moveTaskData.listName;
+  var idx  = _moveTaskData.index;
+  var task = _moveTaskData.task;
+
+  // Ensure target list exists
+  if(!state.lists[targetList]) state.lists[targetList] = [];
+
+  // Add to target
+  state.lists[targetList].push(task);
+
+  // Remove from source
+  state.lists[src].splice(idx, 1);
+
+  saveState();
+  closeMoveTask();
+  renderTasks();
+  renderDashboard();
+  showStreakBanner('Task moved to ' + targetList + '!');
+}
+
+function closeMoveTask(){
+  document.getElementById('move-task-overlay').classList.remove('visible');
+  _moveTaskData = null;
+}
+
+
+// =================================================================
+// FEATURE 1 — SALES ACTIVITY DASHBOARD
+// =================================================================
+function renderSalesDash(){
+  var grid = document.getElementById('sales-dash-grid');
+  var feed = document.getElementById('sales-activity-feed');
+  if(!grid) return;
+
+  var today = todayKey();
+  var weekStart = new Date();
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  var weekKeys = [];
+  for(var i=0;i<7;i++){
+    var d=new Date(weekStart); d.setDate(weekStart.getDate()+i);
+    weekKeys.push(dateKey(d));
+  }
+
+  var log = [];
+  try{ log = JSON.parse(localStorage.getItem(CONTACT_LOG_KEY)||'[]'); }catch(e){}
+  var weekLog = log.filter(function(e){ return weekKeys.indexOf(e.date)!==-1; });
+
+  var calls    = weekLog.filter(function(e){ return e.type==='call'; }).length;
+  var emails   = weekLog.filter(function(e){ return e.type==='email'; }).length;
+  var meetings = weekLog.filter(function(e){ return e.type==='meeting'; }).length;
+  var allTasks = Object.values(state.lists).flat();
+  var tasksDone= allTasks.filter(function(t){ return t.done && weekKeys.indexOf(t.createdDate)!==-1; }).length;
+
+  var stats = [
+    {num:calls,    lbl:'Calls',    sub:'this week', icon:'📞'},
+    {num:emails,   lbl:'Emails',   sub:'this week', icon:'📧'},
+    {num:meetings, lbl:'Meetings', sub:'this week', icon:'🤝'},
+    {num:tasksDone,lbl:'Tasks Done',sub:'this week',icon:'✓'},
+  ];
+
+  grid.innerHTML = stats.map(function(s){
+    return '<div class="sales-dash-card">'
+      +'<div style="font-size:1.2rem;">'+s.icon+'</div>'
+      +'<div class="sales-dash-num">'+s.num+'</div>'
+      +'<div class="sales-dash-lbl">'+s.lbl+'</div>'
+      +'<div class="sales-dash-sub">'+s.sub+'</div>'
+      +'</div>';
+  }).join('');
+
+  if(feed){
+    var recent = log.slice(0,12);
+    var typeIcons = {call:'📞',email:'📧',meeting:'🤝',text:'💬'};
+    feed.innerHTML = recent.length ? recent.map(function(e){
+      return '<div class="activity-feed-item">'
+        +'<span class="activity-feed-icon">'+(typeIcons[e.type]||'📌')+'</span>'
+        +'<div class="activity-feed-body">'
+        +'<div class="activity-feed-who">'+escHtml(e.who)+'</div>'
+        +(e.note?'<div class="activity-feed-note">'+escHtml(e.note)+'</div>':'')
+        +'</div>'
+        +'<div class="activity-feed-date">'+formatDate(e.date)+'</div>'
+        +'</div>';
+    }).join('') : '<div class="empty">No activity logged yet.</div>';
+  }
+}
+
+// =================================================================
+// FEATURE 2 — RAILROAD ACCOUNT CARDS
+// =================================================================
+var RAILROAD_ACCOUNTS = [
+  {id:'up',   name:'Union Pacific',     abbr:'UP',   color:'#003087', icon:'🔵',
+   hq:'Omaha, NE', key_contact:'Electrical Engineering Dept',
+   products:'Holophane High-Mast, AEL Area, Acuity Controls',
+   notes:'Class I — largest RR in US by revenue. Key yard facilities: North Platte, Cheyenne, Roseville.'},
+  {id:'bnsf', name:'BNSF Railway',      abbr:'BNSF', color:'#f26522', icon:'🟠',
+   hq:'Fort Worth, TX', key_contact:'Engineering & Facilities',
+   products:'Holophane High-Mast, Cyclone Area, nLight AIR',
+   notes:'Class I — largest by route miles. Denver Yard active opportunity. Strong ESCO partnership potential.'},
+  {id:'csx',  name:'CSX Transportation',abbr:'CSX',  color:'#0066cc', icon:'🔷',
+   hq:'Jacksonville, FL', key_contact:'Electrical Engineering',
+   products:'Holophane, AEL, Acuity Controls D4i',
+   notes:'Class I — Eastern US. Focus on intermodal facilities and maintenance shops.'},
+  {id:'ns',   name:'Norfolk Southern',  abbr:'NS',   color:'#000000', icon:'⚫',
+   hq:'Atlanta, GA', key_contact:'Engineering Division',
+   products:'Holophane High-Mast, AEL Industrial',
+   notes:'Class I — Southeast/Midwest. Major hump yards. Good controls opportunity.'},
+  {id:'cn',   name:'CN Rail',           abbr:'CN',   color:'#cc0000', icon:'🔴',
+   hq:'Montreal, QC', key_contact:'Infrastructure Engineering',
+   products:'Holophane, AEL, IOTA Emergency',
+   notes:'Class I — Trans-Canada. Cross-border opportunities. French documentation needed in Quebec.'},
+  {id:'cpkc', name:'CPKC',              abbr:'CPKC', color:'#d4212d', icon:'🟥',
+   hq:'Kansas City, MO', key_contact:'Electrical & Lighting Dept',
+   products:'Holophane, Cyclone, Acuity Controls',
+   notes:'Class I — merged CP/KCS. Growing network through Mexico. New management relationships developing.'},
+  {id:'amtrak',name:'Amtrak',           abbr:'AMTK', color:'#215194', icon:'🚄',
+   hq:'Washington, DC', key_contact:'Station Design & Engineering',
+   products:'AEL Architectural, Holophane Platform, Acuity Emergency',
+   notes:'National passenger carrier. Station lighting + platform safety key focus. Federal funding available.'},
+];
+
+function renderAccounts(){
+  ensureFollowUps();
+  var list = document.getElementById('accounts-list');
+  if(!list) return;
+
+  var log = [];
+  try{ log = JSON.parse(localStorage.getItem(CONTACT_LOG_KEY)||'[]'); }catch(e){}
+
+  list.innerHTML = RAILROAD_ACCOUNTS.map(function(acct){
+    // Find open follow-ups for this account
+    var fus = state.followUps.filter(function(f){
+      return !f.done && (f.account||'').toUpperCase().indexOf(acct.abbr) !== -1;
+    });
+    // Find last contact
+    var lastTouch = log.filter(function(e){
+      return (e.who+' '+(e.note||'')).toUpperCase().indexOf(acct.abbr) !== -1 ||
+             (e.who+' '+(e.note||'')).toLowerCase().indexOf(acct.name.toLowerCase()) !== -1;
+    }).sort(function(a,b){ return b.date.localeCompare(a.date); })[0];
+
+    var daysSince = lastTouch
+      ? Math.floor((new Date()-new Date(lastTouch.date))/(86400000))
+      : null;
+
+    var status = daysSince === null ? 'cold'
+               : daysSince <= 14   ? 'active'
+               : daysSince <= 30   ? 'warm' : 'cold';
+
+    var statusLabel = {active:'Active',warm:'Warm',cold:'Needs Touch'}[status];
+    var fuBadge = fus.length
+      ? '<span style="font-size:0.7rem;background:var(--gold-bg);color:var(--gold);border-radius:8px;padding:2px 7px;margin-left:6px;">'+fus.length+' FU</span>'
+      : '';
+
+    var customNotes = (state._accountNotes && state._accountNotes[acct.id]) || '';
+
+    return '<div class="account-card" id="acct-card-'+acct.id+'">'
+      +'<div class="account-card-header" onclick="toggleAccountCard(\''+acct.id+'\')">'
+      +'<div class="account-railroad-icon" style="background:'+acct.color+';">'+acct.icon+'</div>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div class="account-card-name">'+acct.name+fuBadge+'</div>'
+      +'<div class="account-card-meta">'+acct.hq+' &nbsp;·&nbsp; '+(lastTouch?formatDate(lastTouch.date)+' ('+daysSince+'d ago)':'No contact logged')+'</div>'
+      +'</div>'
+      +'<span class="account-status-badge account-status-'+status+'">'+statusLabel+'</span>'
+      +'</div>'
+      +'<div class="account-card-body" id="acct-body-'+acct.id+'">'
+      +'<div class="account-detail-row"><div class="account-detail-label">Products</div><div class="account-detail-val">'+acct.products+'</div></div>'
+      +'<div class="account-detail-row"><div class="account-detail-label">Contact</div><div class="account-detail-val">'+acct.key_contact+'</div></div>'
+      +'<div class="account-detail-row"><div class="account-detail-label">Notes</div><div class="account-detail-val">'+escHtml(acct.notes)+'</div></div>'
+      +(customNotes?'<div class="account-detail-row"><div class="account-detail-label">My Notes</div><div class="account-detail-val" style="color:var(--ink);">'+escHtml(customNotes)+'</div></div>':'')
+      +(fus.length?'<div class="account-section-title">Open Follow-Ups</div>'
+        +fus.map(function(f){
+          return '<div class="account-fu-item">'+escHtml(f.reason)+' — due '+formatDate(f.dueDate)+'</div>';
+        }).join(''):'')
+      +'<div style="display:flex;gap:8px;margin-top:10px;">'
+      +'<button class="account-edit-btn" onclick="editAccountNotes(\''+acct.id+'\')">✏ Add Notes</button>'
+      +'<button class="account-add-fu-btn" onclick="openFuFormWithAccount(\''+acct.name+'\')">+ Follow-Up</button>'
+      +'</div>'
+      +'</div></div>';
+  }).join('');
+}
+
+function toggleAccountCard(id){
+  var body = document.getElementById('acct-body-'+id);
+  if(body) body.classList.toggle('open');
+}
+
+function editAccountNotes(id){
+  if(!id){
+    var id2 = prompt('Enter railroad abbreviation (UP, BNSF, CSX, NS, CN, CPKC, AMTRAK):');
+    if(!id2) return;
+    id = id2.toLowerCase();
+  }
+  var current = (state._accountNotes && state._accountNotes[id]) || '';
+  var note = prompt('Notes for '+id.toUpperCase()+' (current: '+current.slice(0,50)+'):',current);
+  if(note === null) return;
+  if(!state._accountNotes) state._accountNotes = {};
+  state._accountNotes[id] = note;
+  saveState(); renderAccounts();
+}
+
+function openFuFormWithAccount(accountName){
+  var btns = document.querySelectorAll('nav button');
+  btns.forEach(function(b){ if(b.textContent.indexOf('Follow')!==-1) showPage('followup',b); });
+  setTimeout(function(){
+    var el = document.getElementById('fu-account');
+    if(el){ el.value=accountName; el.focus(); }
+  },100);
+}
+
+// =================================================================
+// FEATURE 3 — RESPONSE TEMPLATE LIBRARY
+// =================================================================
+var RESPONSE_TEMPLATES = [
+  {id:'t1', cat:'technical', title:'IES RP-8-25 Compliance Statement',
+   body:'Our [Product Name] luminaires are designed and manufactured in compliance with ANSI/IES RP-8-25 Roadway and Area Lighting. Specific performance data including maintained illuminance levels, uniformity ratios, and BUG ratings per TM-15-20 are available in the accompanying photometric documentation. All fixtures carry DLC Premium listing and meet ASHRAE 90.1 energy requirements.'},
+  {id:'t2', cat:'rfp', title:'RFP Acknowledgment & Submittal Commitment',
+   body:'Thank you for including Holophane/AEL/Acuity Controls in your lighting specification process. We have reviewed the RFP requirements and confirm our ability to provide a fully compliant submittal. Our response will include: (1) complete photometric analysis meeting your specified criteria, (2) product submittals with DLC and Buy American documentation, (3) a detailed bill of materials and pricing, and (4) project references for similar installations. Please confirm the submittal deadline and any addenda schedule.'},
+  {id:'t3', cat:'railroad', title:'Railroad IGI Introduction',
+   body:'Holophane has been the lighting standard for Class I railroad infrastructure for decades. Our high-mast, area, and maintenance facility luminaires are engineered specifically for the demanding requirements of rail yard environments — vibration resistance, wide-area coverage, and integration with modern controls platforms including nLight AIR and DALI-2/D4i. We would welcome the opportunity to discuss how we can support [Railroad Name]\'s ongoing facility improvement program.'},
+  {id:'t4', cat:'technical', title:'ALIA-V Visibility Standard Overview',
+   body:'ALIA-V (Adaptive Lighting and Intelligent Application: Visibility Standard) is a next-generation framework developed as a practitioner supplement to ANSI/IES RP-8. It introduces four performance tiers — Basic, Adaptive, Visibility Engineering, and Predictive — and incorporates metrics beyond horizontal illuminance: S/P ratio optimization, mel-DER/mel-EDI for biological considerations, Vertical Illuminance (Ev) for object detection, and Flux-on-Demand (FoD) for adaptive response. I am a founding contributor to ALIA-V and a member of the ANSI/IES RP-8-25 Executive Committee. Happy to provide detailed documentation.'},
+  {id:'t5', cat:'rfp', title:'BABA / Buy American Compliance Statement',
+   body:'All Holophane, AEL, and Cyclone luminaires offered for IIJA-funded projects are manufactured in our U.S. facilities and meet the requirements of the Build America, Buy America Act (BABA). We can provide manufacturer certifications of domestic origin for all components upon request. Our products also carry FTA Buy America compliance documentation for transit-related applications.'},
+  {id:'t6', cat:'esco', title:'ESCO Partnership / JV Opportunity',
+   body:'Holophane and Acuity Controls are preferred lighting partners for energy service companies pursuing lighting retrofit and new construction opportunities. We offer ESCOs a complete integrated solution: high-performance LED luminaires, advanced controls (nLight, DALI-2, Atrius IoT), measured energy savings documentation, and DLC qualification for utility rebate programs. We are experienced in JV project structures and can support your energy savings guarantee calculations with audited performance data.'},
+  {id:'t7', cat:'product', title:'Acuity Controls / nLight AIR Introduction',
+   body:'Acuity Controls offers the most comprehensive connected lighting platform available for infrastructure applications. nLight AIR provides wireless, battery-free control for outdoor area and roadway luminaires with no additional wiring required. For larger deployments, our DALI-2/D4i platform enables full dimming, sensing, and data collection at the fixture level. The Atrius IoT platform connects fixtures to a central management system for energy monitoring, predictive maintenance, and adaptive control. All systems are interoperable with standard lighting controls and integrate with BMS/SCADA systems.'},
+  {id:'t8', cat:'railroad', title:'Yard Lighting Standards & Recommendations',
+   body:'Railroad yard lighting design follows FRA safety guidelines and AREMA recommendations for adequate illuminance at ground level for worker safety. Holophane recommends a minimum of 2 fc average maintained (with 4:1 uniformity ratio) for active yard areas, increasing to 5 fc for classification areas and inspection pits. High-mast configurations on 70-80 ft poles with Type V distribution provide the widest coverage per pole. Our photometric design team can provide a complete yard layout analysis upon receipt of a site plan with pole locations and heights.'},
+];
+
+function renderTemplates(){
+  renderTemplatesWithFilter('');
+}
+
+function filterTemplates(q){
+  renderTemplatesWithFilter(q);
+}
+
+function renderTemplatesWithFilter(q){
+  var list = document.getElementById('template-list');
+  if(!list) return;
+  var query = (q||'').toLowerCase().trim();
+  var filtered = query
+    ? RESPONSE_TEMPLATES.filter(function(t){
+        return (t.title+' '+t.body+' '+t.cat).toLowerCase().indexOf(query) !== -1;
+      })
+    : RESPONSE_TEMPLATES;
+
+  var catColors = {technical:'tcat-technical',rfp:'tcat-rfp',railroad:'tcat-railroad',esco:'tcat-esco',product:'tcat-product'};
+  var catLabels = {technical:'Technical',rfp:'RFP',railroad:'Railroad',esco:'ESCO',product:'Product'};
+
+  list.innerHTML = filtered.length ? filtered.map(function(t){
+    return '<div class="template-card">'
+      +'<div class="template-card-header" onclick="toggleTemplate(\''+t.id+'\')">'
+      +'<span class="template-cat-badge '+catColors[t.cat]+'">'+catLabels[t.cat]+'</span>'
+      +'<span class="template-title">'+escHtml(t.title)+'</span>'
+      +'</div>'
+      +'<div class="template-body" id="tmpl-body-'+t.id+'">'
+      +escHtml(t.body)
+      +'<br><button class="template-use-btn" onclick="useTemplate(\''+t.id+'\')">Use This Template</button>'
+      +'</div></div>';
+  }).join('') : '<div class="empty">No templates match your search.</div>';
+}
+
+function toggleTemplate(id){
+  var body = document.getElementById('tmpl-body-'+id);
+  if(body) body.classList.toggle('open');
+}
+
+function useTemplate(id){
+  var tmpl = RESPONSE_TEMPLATES.filter(function(t){ return t.id===id; })[0];
+  if(!tmpl) return;
+  var inp = document.getElementById('email-input');
+  if(inp){ inp.value = tmpl.body; inp.focus(); }
+}
+
+// =================================================================
+// FEATURE 4 — TASK COMPLETION TREND CHART
+// =================================================================
+function renderTrendChart(){
+  var barsEl = document.getElementById('trend-bars');
+  if(!barsEl) return;
+
+  var changelog = [];
+  try{ changelog = JSON.parse(localStorage.getItem('plannerChangelog')||'[]'); }catch(e){}
+
+  // Count completions per day for last 30 days
+  var counts = {};
+  var today = new Date();
+  for(var i=29;i>=0;i--){
+    var d = new Date(today); d.setDate(today.getDate()-i);
+    counts[dateKey(d)] = 0;
+  }
+  changelog.forEach(function(entry){
+    if(entry && entry.date && counts[entry.date] !== undefined && entry.completed){
+      counts[entry.date] += entry.completed;
+    }
+  });
+
+  // Also count from task done flags
+  Object.values(state.lists).flat().forEach(function(t){
+    if(t.done && t.createdDate && counts[t.createdDate] !== undefined){
+      counts[t.createdDate]++;
+    }
+  });
+
+  var days  = Object.keys(counts).sort();
+  var vals  = days.map(function(d){ return counts[d]; });
+  var maxVal= Math.max(1, Math.max.apply(null, vals));
+  var todayKey2 = dateKey(today);
+
+  barsEl.innerHTML = days.map(function(d,i){
+    var pct   = Math.max(4, Math.round((vals[i]/maxVal)*100));
+    var isToday = d === todayKey2;
+    var label = i % 5 === 0 ? d.slice(5) : '';
+    return '<div class="trend-bar-wrap" title="'+d+': '+vals[i]+' tasks">'
+      +'<div class="trend-bar-val">'+(vals[i]||'')+'</div>'
+      +'<div class="trend-bar'+(isToday?' today':'')+'" style="height:'+pct+'%"></div>'
+      +'<div class="trend-bar-label">'+label+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// =================================================================
+// FEATURE 5 — CONTACT FREQUENCY TRACKER
+// =================================================================
+function renderFreqTracker(){
+  var el = document.getElementById('freq-tracker-list');
+  if(!el) return;
+
+  var log = [];
+  try{ log = JSON.parse(localStorage.getItem(CONTACT_LOG_KEY)||'[]'); }catch(e){}
+
+  // Build last contact date per person
+  var lastByPerson = {};
+  log.forEach(function(e){
+    if(!lastByPerson[e.who] || e.date > lastByPerson[e.who]) lastByPerson[e.who] = e.date;
+  });
+
+  if(!Object.keys(lastByPerson).length){
+    el.innerHTML='<div class="empty">Log contacts above to track frequency.</div>'; return;
+  }
+
+  var today = new Date();
+  var people = Object.keys(lastByPerson).map(function(name){
+    var days = Math.floor((today - new Date(lastByPerson[name]))/(86400000));
+    return {name:name, days:days, last:lastByPerson[name]};
+  }).sort(function(a,b){ return b.days-a.days; });
+
+  el.innerHTML = people.map(function(p){
+    var cls  = p.days > 30 ? 'freq-dot-late' : p.days > 14 ? 'freq-dot-warn' : 'freq-dot-ok';
+    var late = p.days > 30;
+    return '<div class="freq-item">'
+      +'<div class="freq-dot '+cls+'"></div>'
+      +'<div class="freq-name">'+escHtml(p.name)+'</div>'
+      +'<div class="freq-days'+(late?' late':'')+'">'+p.days+'d ago</div>'
+      +'</div>';
+  }).join('');
+}
+
+// =================================================================
+// FEATURE 6 — PARA TIMELINE VIEW
+// =================================================================
+function renderTimeline(){
+  var headerEl = document.getElementById('timeline-header');
+  var rowsEl   = document.getElementById('timeline-rows');
+  if(!headerEl || !rowsEl) return;
+  ensurePara();
+
+  var active = state.para.projects.filter(function(p){ return !p.archived && p.deadline; });
+  if(!active.length){
+    rowsEl.innerHTML='<div class="empty">Add deadlines to PARA projects to see them here.</div>';
+    headerEl.innerHTML=''; return;
+  }
+
+  // Build 6-month window
+  var now = new Date();
+  var months = [];
+  for(var m=0;m<6;m++){
+    var d = new Date(now.getFullYear(), now.getMonth()+m, 1);
+    months.push({year:d.getFullYear(), month:d.getMonth(),
+      label:d.toLocaleDateString('en-US',{month:'short',year:'2-digit'})});
+  }
+  var winStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  var winEnd   = new Date(now.getFullYear(), now.getMonth()+6, 0);
+  var winMs    = winEnd - winStart;
+
+  headerEl.innerHTML = months.map(function(m){
+    return '<div class="timeline-month-lbl">'+m.label+'</div>';
+  }).join('');
+
+  rowsEl.innerHTML = active.map(function(p){
+    var dl    = new Date(p.deadline);
+    var daysLeft = Math.ceil((dl-now)/86400000);
+    var barCls   = daysLeft < 0 ? 'tbar-overdue' : daysLeft < 14 ? 'tbar-soon' : 'tbar-ok';
+
+    // Bar from today to deadline
+    var barStart = Math.max(0, (now-winStart)/winMs*100);
+    var barEnd   = Math.min(100, (dl-winStart)/winMs*100);
+    var barWidth = Math.max(2, barEnd-barStart);
+
+    var doneCount  = p.tasks ? p.tasks.filter(function(t){ return t.done; }).length : 0;
+    var totalCount = p.tasks ? p.tasks.length : 0;
+    var pct        = totalCount ? Math.round(doneCount/totalCount*100) : 0;
+
+    return '<div class="timeline-row">'
+      +'<div class="timeline-proj-name" title="'+escHtml(p.title)+'">'+escHtml(p.title)+'</div>'
+      +'<div class="timeline-track">'
+      +'<div class="timeline-bar '+barCls+'" style="left:'+barStart+'%;width:'+barWidth+'%">'
+      +formatDate(p.deadline)+' ('+pct+'%)'
+      +'</div></div></div>';
+  }).join('');
+}
+
+// =================================================================
+// FEATURE 7 — JOURNAL WORD COUNT SPARKLINE
+// =================================================================
+function renderJournalSparkline(){
+  var el = document.getElementById('journal-sparkline');
+  if(!el) return;
+  var today = new Date();
+  var days = [];
+  for(var i=29;i>=0;i--){
+    var d=new Date(today); d.setDate(today.getDate()-i);
+    days.push(dateKey(d));
+  }
+  var counts = days.map(function(dk){
+    var e = state.journal[dk];
+    return e && e.text ? e.text.trim().split(/\s+/).length : 0;
+  });
+  var maxCount = Math.max(1, Math.max.apply(null,counts));
+  var todayDk  = dateKey(today);
+  el.innerHTML = days.map(function(dk,i){
+    var pct = Math.max(4, Math.round((counts[i]/maxCount)*100));
+    var isToday = dk === todayDk;
+    return '<div class="sparkline-bar'+(isToday?' today':'')+'" style="height:'+pct+'%"'
+      +' title="'+dk+': '+counts[i]+' words"></div>';
+  }).join('');
+}
+
+// =================================================================
+// FEATURE 8 — QUICK DUE DATE BUTTONS
+// =================================================================
+function setQuickDate(daysFromNow){
+  var d = new Date();
+  d.setDate(d.getDate() + daysFromNow);
+  var inp = document.getElementById('task-due-date');
+  if(inp) inp.value = dateKey(d);
+}
+function setQuickDateFriday(){
+  var d = new Date();
+  var dow = d.getDay();
+  var daysUntilFriday = dow <= 5 ? 5-dow : 6;
+  d.setDate(d.getDate() + daysUntilFriday);
+  var inp = document.getElementById('task-due-date');
+  if(inp) inp.value = dateKey(d);
+}
+function clearQuickDate(){
+  var inp = document.getElementById('task-due-date');
+  if(inp) inp.value = '';
+}
+
+// =================================================================
+// FEATURE 9 — COMMS TONE SELECTOR
+// =================================================================
+
+// moved to early declarations
+
+function setCommsTone(tone){
+  _commsTone = tone;
+  document.querySelectorAll('.tone-btn').forEach(function(b){
+    b.classList.toggle('active', b.id === 'tone-'+tone);
+  });
+}
+
+// =================================================================
+// FEATURE 10 — AUTO MORNING BRIEF
+// =================================================================
+function setAutoBrief(enabled){
+  localStorage.setItem('plannerAutoBrief', enabled ? '1' : '0');
+  var status = document.getElementById('auto-brief-status');
+  if(status) status.textContent = enabled ? 'Auto-brief enabled.' : 'Auto-brief disabled.';
+}
+
+function checkAutoBrief(){
+  var enabled = localStorage.getItem('plannerAutoBrief') === '1';
+  var tog = document.getElementById('auto-brief-toggle');
+  if(tog) tog.checked = enabled;
+  if(!enabled) return;
+  var lastRun = localStorage.getItem('plannerLastBrief');
+  var today   = todayKey();
+  if(lastRun === today) return;
+  localStorage.setItem('plannerLastBrief', today);
+  // Auto-switch to brief tab after 2 seconds if user is on tasks
+  setTimeout(function(){
+    var btns = document.querySelectorAll('nav button');
+    btns.forEach(function(b){ if(b.textContent.indexOf('Brief')!==-1 && !b.classList.contains('active')){
+      showPage('brief', b);
+    }});
+  }, 2000);
+}
+
+function syncAutoBriefUI(){
+  var enabled = localStorage.getItem('plannerAutoBrief') === '1';
+  var tog = document.getElementById('auto-brief-toggle');
+  if(tog) tog.checked = enabled;
+}
+
+// =================================================================
+// FEATURE 11 — PROPOSAL TRACKER
+// =================================================================
+function ensureProposals(){
+  if(!state.proposals) state.proposals = [];
+}
+
+// moved to early declarations
+
+function addProposal(){
+  ensureProposals();
+  var name    = document.getElementById('prop-name').value.trim();
+  var account = document.getElementById('prop-account').value.trim();
+  var value   = document.getElementById('prop-value').value.trim();
+  var due     = document.getElementById('prop-due').value;
+  var stage   = document.getElementById('prop-stage').value;
+  if(!name){ alert('Please enter a project name.'); return; }
+  state.proposals.unshift({
+    id:'p'+Date.now(), name:name, account:account,
+    value:value, due:due, stage:stage, created:todayKey(), notes:''
+  });
+  saveState();
+  document.getElementById('prop-name').value='';
+  document.getElementById('prop-account').value='';
+  document.getElementById('prop-value').value='';
+  document.getElementById('prop-due').value='';
+  renderProposals();
+}
+
+function renderProposals(){
+  ensureProposals();
+  var el = document.getElementById('proposals-list'); if(!el) return;
+  var today = todayKey();
+  var props = state.proposals.slice();
+
+  if(_propFilter === 'active'){
+    props = props.filter(function(p){ return p.stage!=='won' && p.stage!=='lost'; });
+  } else if(_propFilter === 'won'){
+    props = props.filter(function(p){ return p.stage==='won'; });
+  } else if(_propFilter === 'railroad'){
+    props = props.filter(function(p){
+      return /railroad|igi|bnsf|up|csx|ns|cn|cpkc|amtrak|union pacific|norfolk/i.test(p.account+p.name);
+    });
+  }
+
+  var stageColors = {identified:'pstage-identified',quoted:'pstage-quoted',submitted:'pstage-submitted',
+                     followup:'pstage-followup',won:'pstage-won',lost:'pstage-lost'};
+  var stageLabels = {identified:'Identified',quoted:'Quoted',submitted:'Submitted',
+                     followup:'Follow-Up',won:'Won',lost:'Lost'};
+
+  el.innerHTML = props.length ? props.map(function(p){
+    var overdue = p.due && p.due < today && p.stage!=='won' && p.stage!=='lost';
+    return '<div class="proposal-card" style="'+(overdue?'border-color:var(--pri-high);':'')+'">'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div class="proposal-name">'+escHtml(p.name)+'</div>'
+      +'<div class="proposal-meta">'
+      +(p.account?escHtml(p.account)+' &nbsp;·&nbsp; ':'')
+      +(p.value?'$'+escHtml(p.value)+' &nbsp;·&nbsp; ':'')
+      +(p.due?'Due: '+formatDate(p.due):'No deadline')
+      +'</div></div>'
+      +'<span class="proposal-stage '+stageColors[p.stage]+'">'+stageLabels[p.stage]+'</span>'
+      +'<select style="font-family:Arial,sans-serif;font-size:0.75rem;border:1px solid var(--border);border-radius:4px;padding:3px 6px;" onchange="updateProposalStage(\''+p.id+'\',this.value)">'
+      +Object.keys(stageLabels).map(function(s){
+        return '<option value="'+s+'"'+(p.stage===s?' selected':'')+'>'+stageLabels[s]+'</option>';
+      }).join('')
+      +'</select>'
+      +'<button style="background:none;border:none;color:var(--pri-high);cursor:pointer;font-size:0.85rem;" onclick="deleteProposal(\''+p.id+'\')" title="Delete">✕</button>'
+      +'</div>';
+  }).join('') : '<div class="empty">No proposals match this filter. Add one above.</div>';
+}
+
+function updateProposalStage(id, stage){
+  ensureProposals();
+  var p = state.proposals.filter(function(p){ return p.id===id; })[0];
+  if(p){ p.stage=stage; saveState(); renderProposals(); }
+}
+
+function deleteProposal(id){
+  ensureProposals();
+  if(!confirm('Delete this proposal?')) return;
+  state.proposals = state.proposals.filter(function(p){ return p.id!==id; });
+  saveState(); renderProposals();
+}
+
+function setPropFilter(f){
+  _propFilter = f;
+  document.querySelectorAll('[id^="prop-filter-"]').forEach(function(b){
+    b.classList.toggle('active', b.id==='prop-filter-'+f);
+  });
+  renderProposals();
+}
+
+
+// =================================================================
+// REV28 NEW FEATURES — appended cleanly
+// =================================================================
+
+// ── Early-safe vars ───────────────────────────────────────────────
+var _taskSortMode = 'none';
+var _commsPill    = 'compose';
+
+// =================================================================
+// FEATURE 3 — TASK SORT
+// =================================================================
+function sortTasks(mode){
+  _taskSortMode = mode;
+  document.querySelectorAll('.sort-btn').forEach(function(b){
+    b.classList.toggle('active', b.id === 'sort-btn-'+mode);
+  });
+  renderTasks();
+}
+
+function getSortedTasks(arr){
+  if(!arr || _taskSortMode === 'none') return arr ? arr.slice() : [];
+  var sorted = arr.slice();
+  var priOrder = {HIGH:0, MEDIUM:1, LOW:2, '':3};
+  if(_taskSortMode === 'priority'){
+    sorted.sort(function(a,b){
+      return (priOrder[a.priority||'']||3) - (priOrder[b.priority||'']||3);
+    });
+  } else if(_taskSortMode === 'due'){
+    sorted.sort(function(a,b){
+      if(!a.dueDate && !b.dueDate) return 0;
+      if(!a.dueDate) return 1;
+      if(!b.dueDate) return -1;
+      return a.dueDate.localeCompare(b.dueDate);
+    });
+  } else if(_taskSortMode === 'alpha'){
+    sorted.sort(function(a,b){ return a.text.localeCompare(b.text); });
+  }
+  return sorted;
+}
+
+// =================================================================
+// FEATURE 4 — DUE DATE COUNTDOWN BADGE
+// =================================================================
+function getDueBadgeHtml(task, today){
+  if(task.done || !task.dueDate) return '';
+  var diff = Math.ceil((new Date(task.dueDate) - new Date(today)) / 86400000);
+  if(diff < 0)   return '<span class="due-countdown overdue">'+Math.abs(diff)+'d overdue</span>';
+  if(diff === 0) return '<span class="due-countdown today">Due today</span>';
+  if(diff <= 3)  return '<span class="due-countdown soon">In '+diff+'d</span>';
+  return '';
+}
+
+// =================================================================
+// FEATURE 5 — FOLLOW-UP → EMAIL DRAFT
+// =================================================================
+function fuToEmailDraft(id){
+  ensureFollowUps();
+  var fu = state.followUps.find(function(f){ return f.id===id; });
+  if(!fu) return;
+  var btns = document.querySelectorAll('nav button');
+  btns.forEach(function(b){
+    if(b.textContent.indexOf('Comms')!==-1 || b.textContent.indexOf('Email')!==-1){
+      showPage('email', b);
+    }
+  });
+  setTimeout(function(){
+    var inp = document.getElementById('email-input');
+    if(inp){
+      inp.value = 'FOLLOW-UP CONTEXT:\nContact: '+fu.contact+'\nAccount: '+(fu.account||'')+
+        '\nType: '+fu.type+'\nReason: '+fu.reason+'\nNotes: '+(fu.notes||'')+
+        '\nDue: '+fu.dueDate+'\n\nPlease draft a professional follow-up email from John Petty.';
+      inp.focus();
+    }
+    if(fu.type==='proposal'||fu.type==='quote') setCommsTone('formal');
+    else setCommsTone('collab');
+  }, 200);
+}
+
+// =================================================================
+// FEATURE 6 — FOLLOW-UP EXPORT TO CSV + CONTACT AUTOCOMPLETE
+// =================================================================
+function exportFollowUps(){
+  ensureFollowUps();
+  if(!state.followUps.length){ alert('No follow-ups to export.'); return; }
+  var lines = ['Date,Contact,Account,Type,Reason,Due,Status,Notes'];
+  state.followUps.forEach(function(f){
+    lines.push([f.created,
+      '"'+(f.contact||'').replace(/"/g,'""')+'"',
+      '"'+(f.account||'').replace(/"/g,'""')+'"',
+      f.type,
+      '"'+(f.reason||'').replace(/"/g,'""')+'"',
+      f.dueDate, f.done?'Done':'Open',
+      '"'+(f.notes||'').replace(/"/g,'""')+'"'
+    ].join(','));
+  });
+  var blob = new Blob([lines.join('\n')], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'follow_ups_'+todayKey()+'.csv';
+  a.click();
+}
+
+function updateFuContactAutocomplete(){
+  var dl = document.getElementById('fu-contact-list'); if(!dl) return;
+  var log = [];
+  try{ log = JSON.parse(localStorage.getItem(CONTACT_LOG_KEY)||'[]'); }catch(e){}
+  ensureFollowUps();
+  var names = new Set();
+  log.forEach(function(e){ if(e.who) names.add(e.who); });
+  state.followUps.forEach(function(f){ if(f.contact) names.add(f.contact); });
+  dl.innerHTML = Array.from(names).map(function(n){
+    return '<option value="'+escHtml(n)+'">';
+  }).join('');
+}
+
+// =================================================================
+// FEATURE 7 — CALENDAR EVENT TYPE + COLOR DOT
+// =================================================================
+function getEventDotHtml(evType){
+  var cls = 'evtype-'+(evType||'default');
+  return '<span class="cal-event-dot '+cls+'"></span>';
+}
+
+// =================================================================
+// FEATURE 8 — MORNING BRIEF AUTO-GENERATOR
+// =================================================================
+function generateMorningBrief(){
+  var today = todayKey();
+  var now   = new Date();
+  ensureFollowUps(); ensurePara();
+
+  var todayTasks  = (state.lists['Today']||[]).filter(function(t){ return !t.done; });
+  var top3        = (state.top3||[]).filter(Boolean).map(function(t){ return t.replace(/\|\|.*/,''); });
+  var fuDue       = state.followUps.filter(function(f){
+    return !f.done && (!f.snoozedUntil||f.snoozedUntil<=today) && f.dueDate<=today;
+  });
+  var todayEvents = (state.events[today]||[]).filter(function(e){ return !e.isGenerated; });
+  var rrTasks     = (state.lists['Railroad IGI']||[]).filter(function(t){ return !t.done; });
+  var urgentProjs = state.para.projects.filter(function(p){
+    if(p.archived||!p.deadline) return false;
+    return Math.ceil((new Date(p.deadline)-now)/86400000) <= 14;
+  });
+  var habitsDone  = state.habits.filter(function(_,hi){
+    return state.habitLog[hi]&&state.habitLog[hi][today];
+  }).length;
+
+  var b = '═══════════════════════════════════════\n';
+  b += '  JOHN PETTY — MORNING BRIEF\n';
+  b += '  '+now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'\n';
+  b += '═══════════════════════════════════════\n\n';
+
+  b += '🎯 TOP 3 TODAY\n';
+  if(top3.length) top3.forEach(function(t,i){ b += '  '+(i+1)+'. '+t+'\n'; });
+  else b += '  (No Top 3 set)\n';
+  b += '\n';
+
+  b += '📅 CALENDAR TODAY\n';
+  if(todayEvents.length) todayEvents.forEach(function(e){ b += '  '+(e.time?e.time+' — ':'')+e.text+'\n'; });
+  else b += '  No events scheduled\n';
+  b += '\n';
+
+  if(fuDue.length){
+    b += '🔔 FOLLOW-UPS DUE ('+fuDue.length+')\n';
+    fuDue.slice(0,5).forEach(function(f){
+      b += '  '+(f.dueDate<today?'⚠ ':'• ')+f.contact+(f.account?' ('+f.account+')':'')+' — '+f.reason+'\n';
+    });
+    if(fuDue.length>5) b += '  …and '+(fuDue.length-5)+' more\n';
+    b += '\n';
+  }
+
+  b += '✓ TODAY\'S TASKS ('+todayTasks.length+' open)\n';
+  todayTasks.slice(0,8).forEach(function(t){
+    b += '  '+(t.priority==='HIGH'?'[H] ':'')+t.text+(t.dueDate?' (due '+formatDate(t.dueDate)+')':'')+'\n';
+  });
+  if(todayTasks.length>8) b += '  …and '+(todayTasks.length-8)+' more\n';
+  b += '\n';
+
+  b += '🚂 RAILROAD IGI ('+rrTasks.length+' open)\n';
+  rrTasks.slice(0,5).forEach(function(t){ b += '  • '+t.text+'\n'; });
+  if(rrTasks.length>5) b += '  …and '+(rrTasks.length-5)+' more\n';
+  b += '\n';
+
+  if(urgentProjs.length){
+    b += '📋 PROJECTS DUE SOON\n';
+    urgentProjs.forEach(function(p){
+      var d = Math.ceil((new Date(p.deadline)-now)/86400000);
+      b += '  • '+p.title+' — due in '+d+'d ('+formatDate(p.deadline)+')\n';
+    });
+    b += '\n';
+  }
+
+  if(state.habits.length) b += '◎ HABITS: '+habitsDone+'/'+state.habits.length+' done today\n\n';
+
+  b += '───────────────────────────────────────\n';
+  b += 'Generated: '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})+'\n';
+  b += 'John Petty Daily Planner — rev28\n';
+
+  var out = document.getElementById('brief-auto-output');
+  if(out){ out.value=b; out.style.minHeight='300px'; }
+}
+
+function copyBriefToClipboard(){
+  var out = document.getElementById('brief-auto-output');
+  if(!out||!out.value){ alert('Generate your brief first.'); return; }
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(out.value).then(function(){ showStreakBanner('Brief copied!'); });
+}
+function clearBriefOutput(){
+  var out = document.getElementById('brief-auto-output'); if(out) out.value='';
+}
+
+// =================================================================
+// FEATURE 9 — BI-WEEKLY SALES REPORT
+// =================================================================
+function generateBiweeklyReport(){
+  var now = new Date();
+  var start = new Date(now); start.setDate(now.getDate()-13);
+  var keys = [];
+  for(var d=new Date(start); d<=now; d.setDate(d.getDate()+1)) keys.push(dateKey(new Date(d)));
+
+  var log = [];
+  try{ log = JSON.parse(localStorage.getItem(CONTACT_LOG_KEY)||'[]'); }catch(e){}
+  var pl = log.filter(function(e){ return keys.indexOf(e.date)!==-1; });
+
+  var calls    = pl.filter(function(e){ return e.type==='call'; });
+  var emails   = pl.filter(function(e){ return e.type==='email'; });
+  var meetings = pl.filter(function(e){ return e.type==='meeting'; });
+  var completed = Object.values(state.lists).flat().filter(function(t){
+    return t.done && t.createdDate && keys.indexOf(t.createdDate)!==-1;
+  });
+  ensureProposals();
+  var activeProps = state.proposals.filter(function(p){ return p.stage!=='won'&&p.stage!=='lost'; });
+  var wonProps    = state.proposals.filter(function(p){ return p.stage==='won'; });
+  var rrOpen      = (state.lists['Railroad IGI']||[]).filter(function(t){ return !t.done; });
+
+  var period = start.toLocaleDateString('en-US',{month:'long',day:'numeric'})
+    +' – '+now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  var r = '════════════════════════════════════════════\n';
+  r += '  INFRASTRUCTURE & RAILROAD SALES REPORT\n';
+  r += '  John Petty — Holophane / AEL / Acuity Controls\n';
+  r += '  Period: '+period+'\n';
+  r += '════════════════════════════════════════════\n\n';
+  r += 'ACTIVITY\n'+'─'.repeat(42)+'\n';
+  r += '  Calls: '+calls.length+'  Emails: '+emails.length+'  Meetings: '+meetings.length+'\n';
+  r += '  Tasks completed: '+completed.length+'  Total touches: '+pl.length+'\n\n';
+
+  r += 'KEY CONTACTS\n'+'─'.repeat(42)+'\n';
+  var byPerson = {};
+  pl.forEach(function(e){ if(!byPerson[e.who]) byPerson[e.who]=[]; byPerson[e.who].push(e.type+(e.note?' — '+e.note:'')); });
+  Object.keys(byPerson).forEach(function(who){
+    r += '  '+who+'\n';
+    byPerson[who].forEach(function(n){ r += '    • '+n+'\n'; });
+  });
+  if(!Object.keys(byPerson).length) r += '  (No contacts logged)\n';
+  r += '\n';
+
+  r += 'RAILROAD IGI ('+rrOpen.length+' open)\n'+'─'.repeat(42)+'\n';
+  rrOpen.slice(0,8).forEach(function(t){ r += '  • ['+( t.priority||'MED')+'] '+t.text+'\n'; });
+  r += '\n';
+
+  r += 'ACTIVE PROPOSALS ('+activeProps.length+')\n'+'─'.repeat(42)+'\n';
+  activeProps.slice(0,8).forEach(function(p){
+    r += '  • '+p.name+(p.account?' ('+p.account+')':'')+' — '+p.stage.toUpperCase()+(p.value?' — $'+p.value:'')+(p.due?' — Due: '+formatDate(p.due):'')+'\n';
+  });
+  if(!activeProps.length) r += '  (None)\n';
+  r += '\n';
+
+  if(wonProps.length){
+    r += 'WINS\n'+'─'.repeat(42)+'\n';
+    wonProps.forEach(function(p){
+      r += '  ✓ '+p.name+(p.account?' ('+p.account+')':'')+'\n';
+      if(p.winNote) r += '    Note: '+p.winNote+'\n';
+    });
+    r += '\n';
+  }
+
+  r += 'HIGHLIGHTS\n'+'─'.repeat(42)+'\n';
+  r += '  [Add highlights here before sending]\n\n';
+  r += '════════════════════════════════════════════\n';
+  r += 'Generated: '+now.toLocaleString()+'\n';
+
+  var out = document.getElementById('biweekly-report-output');
+  if(out){ out.value=r; out.style.minHeight='320px'; }
+}
+
+function copyBiweeklyReport(){
+  var out = document.getElementById('biweekly-report-output');
+  if(!out||!out.value){ alert('Build the report first.'); return; }
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(out.value).then(function(){ showStreakBanner('Report copied!'); });
+}
+
+// =================================================================
+// FEATURE 10 — RAILROAD IGI DASHBOARD
+// =================================================================
+function renderIGIDashboard(){
+  var el = document.getElementById('igi-dashboard'); if(!el) return;
+  ensureFollowUps(); ensureProposals();
+  var log = [];
+  try{ log = JSON.parse(localStorage.getItem(CONTACT_LOG_KEY)||'[]'); }catch(e){}
+
+  // Use RAILROAD_ACCOUNTS — defined elsewhere in this file
+  var accounts = (typeof RAILROAD_ACCOUNTS !== 'undefined') ? RAILROAD_ACCOUNTS : [];
+
+  el.innerHTML = accounts.map(function(acct){
+    var fus = state.followUps.filter(function(f){
+      return !f.done && (f.account||'').toUpperCase().indexOf(acct.abbr)!==-1;
+    });
+    var props = state.proposals.filter(function(p){
+      return p.stage!=='won'&&p.stage!=='lost'&&
+        ((p.account||'').toUpperCase().indexOf(acct.abbr)!==-1||(p.name||'').toUpperCase().indexOf(acct.abbr)!==-1);
+    });
+    var lastTouch = log.filter(function(e){
+      return (e.who+' '+(e.note||'')).toUpperCase().indexOf(acct.abbr)!==-1;
+    }).sort(function(a,b){ return b.date.localeCompare(a.date); })[0];
+    var days = lastTouch ? Math.floor((new Date()-new Date(lastTouch.date))/86400000) : null;
+    var late = days===null||days>30;
+
+    return '<div class="igi-dash-card"><div class="igi-dash-header">'
+      +'<div class="igi-dash-rr-icon" style="background:'+acct.color+';">'+acct.icon+'</div>'
+      +'<div class="igi-dash-name">'+acct.name+'</div>'
+      +'<div class="igi-dash-stats">'
+      +(fus.length?'<span class="igi-stat igi-stat-fu">'+fus.length+' FU</span>':'')
+      +(props.length?'<span class="igi-stat igi-stat-prop">'+props.length+' prop</span>':'')
+      +'<span class="igi-stat igi-stat-days'+(late?' late':'')+'">'+
+        (days===null?'No contact':days+'d ago')+'</span>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+// =================================================================
+// FEATURE 11 — WIN/LOSS NOTE LOGGER (wraps existing updateProposalStage)
+// =================================================================
+function logWinLossNote(id, stage){
+  ensureProposals();
+  var p = state.proposals.find(function(x){ return x.id===id; });
+  if(!p) return;
+  if(stage==='won'||stage==='lost'){
+    var msg = stage==='won'
+      ? 'Won! Add a note (e.g. "Price + brand trust"):'
+      : 'Lost. Add a note (e.g. "Lost on price to agency"):';
+    var note = prompt(msg,'');
+    if(note!==null){ if(stage==='won') p.winNote=note; else p.lossNote=note; }
+  }
+  p.stage = stage;
+  saveState(); renderProposals();
+}
+
+// =================================================================
+// FEATURE 12 — ALIA-V PROGRESS TRACKER
+// =================================================================
+var ALIA_DOCS = [
+  {id:'alia-wp',      name:'ALIA-V White Paper v2',                  status:'review'},
+  {id:'alia-scoring', name:'ALIA Scoring Criteria Document',          status:'approved'},
+  {id:'alia-annex',   name:'Annex A — FAQ & Authorship Credits',      status:'approved'},
+  {id:'alia-rr',      name:'Railroad Indoor Lighting Checklist',      status:'draft'},
+  {id:'alia-ies',     name:'IES Supplement Proposal (RP-8)',          status:'pending'},
+  {id:'alia-nchrp',   name:'NCHRP 05-26 PI Outreach (Ron Gibbons)',   status:'pending'},
+  {id:'alia-tech',    name:'Technical Harmonization Memo (DarkSky)',  status:'submitted'},
+  {id:'alia-roadmap', name:'Road Map for Collaboration',              status:'submitted'},
+];
+
+function renderAliaProgress(){
+  var el = document.getElementById('alia-progress-list'); if(!el) return;
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem('plannerAliaProgress')||'{}'); }catch(e){}
+  var sLabels = {draft:'Draft',review:'In Review',submitted:'Submitted',approved:'Approved',pending:'Pending'};
+  var sCls    = {draft:'alia-s-draft',review:'alia-s-review',submitted:'alia-s-submitted',approved:'alia-s-approved',pending:'alia-s-pending'};
+  el.innerHTML = ALIA_DOCS.map(function(doc){
+    var s = saved[doc.id]||doc.status;
+    return '<div class="alia-track-item">'
+      +'<div class="alia-track-name">'+escHtml(doc.name)+'</div>'
+      +'<span class="alia-track-status '+(sCls[s]||'alia-s-pending')+'">'+( sLabels[s]||s)+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+function editAliaProgress(){
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem('plannerAliaProgress')||'{}'); }catch(e){}
+  var name = prompt('Document name (partial ok):','');
+  if(!name) return;
+  var match = ALIA_DOCS.find(function(d){ return d.name.toLowerCase().indexOf(name.toLowerCase())!==-1; });
+  if(!match){ alert('Not found. Options: '+ALIA_DOCS.map(function(d){return d.name;}).join(', ')); return; }
+  var status = prompt('Status (pending/draft/review/submitted/approved):',saved[match.id]||match.status);
+  if(!status) return;
+  saved[match.id] = status.toLowerCase().trim();
+  localStorage.setItem('plannerAliaProgress', JSON.stringify(saved));
+  renderAliaProgress();
+}
+
+// =================================================================
+// FEATURE 13 — COMMS STREAMLINE — PILL NAVIGATION
+// =================================================================
+function switchCommsPill(pill){
+  _commsPill = pill;
+  document.querySelectorAll('.comms-pill').forEach(function(b){
+    b.classList.toggle('active', b.id==='cpill-'+pill);
+  });
+  var sections = {
+    compose:   document.getElementById('comms-compose-section'),
+    templates: document.getElementById('comms-templates-section'),
+    history:   document.getElementById('comms-history-section')
+  };
+  Object.keys(sections).forEach(function(k){
+    if(sections[k]) sections[k].style.display = (k===pill)?'':'none';
+  });
+  if(pill==='templates') renderTemplates();
+  if(pill==='history')   renderEmailHistory();
+}
+
+
+// =================================================================
+// TASK STATUS SYSTEM — In Progress / Pending / Clear
+// =================================================================
+
+// Status menu singleton
+var _statusMenuOpen = null;
+
+function openTaskStatusMenu(e, listName, idx){
+  e.stopPropagation();
+
+  // Close any existing menu
+  closeTaskStatusMenu();
+
+  var task = state.lists[listName] && state.lists[listName][idx];
+  if(!task) return;
+
+  var current = task.status || '';
+
+  var menu = document.createElement('div');
+  menu.className = 'task-status-menu';
+  menu.id = 'task-status-menu';
+
+  var options = [
+    { value:'',           icon:'◌', label:'No Status',          cls:'' },
+    { value:'inprogress', icon:'⚡', label:'In Progress',        cls:current==='inprogress'?'active':'' },
+    { value:'pending',    icon:'⏳', label:'Pending / Left VM',  cls:current==='pending'?'active':'' },
+  ];
+
+  options.forEach(function(opt){
+    var item = document.createElement('div');
+    item.className = 'task-status-menu-item ' + opt.cls;
+    item.innerHTML = '<span style="font-size:1rem;">' + opt.icon + '</span>'
+      + '<span>' + opt.label + '</span>'
+      + (opt.value === current ? '<span style="margin-left:auto;color:var(--blue);">✓</span>' : '');
+    item.onclick = function(ev){
+      ev.stopPropagation();
+      setTaskStatus(listName, idx, opt.value);
+      closeTaskStatusMenu();
+    };
+    menu.appendChild(item);
+  });
+
+  // Position near the button
+  var btn = e.currentTarget;
+  var rect = btn.getBoundingClientRect();
+  menu.style.position = 'fixed';
+  menu.style.top  = (rect.bottom + 4) + 'px';
+  menu.style.left = Math.min(rect.left, window.innerWidth - 180) + 'px';
+
+  document.body.appendChild(menu);
+  _statusMenuOpen = menu;
+
+  // Close on next click anywhere
+  setTimeout(function(){
+    document.addEventListener('click', closeTaskStatusMenu, { once: true });
+  }, 10);
+}
+
+function closeTaskStatusMenu(){
+  var m = document.getElementById('task-status-menu');
+  if(m) m.remove();
+  _statusMenuOpen = null;
+}
+
+function setTaskStatus(listName, idx, status){
+  if(!state.lists[listName] || !state.lists[listName][idx]) return;
+  state.lists[listName][idx].status = status || undefined;
+  saveState();
+  renderTasks();
+  // If setting to in-progress, offer to log a contact
+  if(status === 'pending'){
+    var task = state.lists[listName][idx];
+    showStreakBanner('⏳ "' + task.text.slice(0,40) + '" marked Pending');
+  } else if(status === 'inprogress'){
+    var task2 = state.lists[listName][idx];
+    showStreakBanner('⚡ "' + task2.text.slice(0,40) + '" marked In Progress');
+  }
 }
 
 </script>
