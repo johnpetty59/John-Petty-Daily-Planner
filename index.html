@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>John Petty Daily Planner</title>
 <style>
@@ -1524,8 +1526,8 @@
 
   /* ── CLOUDFLARE SYNC INDICATOR ── */
   #sync-indicator{position:fixed;bottom:16px;right:16px;font-size:0.72rem;font-weight:700;
-    padding:5px 12px;border-radius:12px;z-index:3000;transition:opacity 0.4s;opacity:0;
-    pointer-events:none;font-family:Arial,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    padding:5px 12px;border-radius:12px;z-index:3000;transition:opacity 0.5s;opacity:0;
+    pointer-events:none;font-family:Arial,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.12);}
   #sync-indicator.syncing{background:#fff3e0;color:#e65100;opacity:1;}
   #sync-indicator.synced{background:#e8f5e9;color:#1b5e20;opacity:1;}
   #sync-indicator.error{background:#ffebee;color:#b71c1c;opacity:1;}
@@ -2916,10 +2918,6 @@ const JOURNAL_PROMPTS = [
 let _promptIdx = Math.floor(Math.random()*JOURNAL_PROMPTS.length);
 
 // ── Runtime state variables — declared early ──
-// ── Cloudflare Sync — declared early ──
-var CF_WORKER_URL = 'https://rough-disk-850a.johnpetty59.workers.dev';
-// _syncTimer and _lastSyncedData moved to early declarations
-
 // ── Theme system — declared early ──
 var THEME_KEY = 'plannerTheme';
 var THEME_COLORS = {
@@ -3018,6 +3016,7 @@ function saveState(){
   // Keep v3 in sync so old file still works if opened
   localStorage.setItem('planner_v3', JSON.stringify(state));
   flashSaved();
+  if(typeof triggerSync === "function") triggerSync();
 }
 
 // ── UTILS ──
@@ -4272,7 +4271,7 @@ setInterval(checkStreakMilestones, 3600000);
 if(!state.projects) state.projects=[];
 // Load background image from IndexedDB (async) then apply
 checkFirstRun();
-setTimeout(initCloudSync, 1000);
+setTimeout(initCloudSync, 500);
 loadBgImageIDB().then(dataURL => {
   if(dataURL){ _bgImageData = dataURL; }
   applyBackground();
@@ -10240,84 +10239,122 @@ function setTaskStatus(listName, idx, status){
   }
 }
 
+
 // =================================================================
-// CLOUDFLARE KV SYNC — rev29
+// CLOUDFLARE KV SYNC — rev30 — fully hardcoded URL
 // =================================================================
-// CF_WORKER_URL moved to early declarations
-var _syncTimer = null;
-var _lastSyncedData = '';
+var _syncTimer    = null;
+var _lastSyncTime = 0;
+var _isSyncing    = false;
 
 function showSyncStatus(status, msg){
   var el = document.getElementById('sync-indicator');
   if(!el) return;
   el.className = status;
-  var icons = {syncing:'⟳ ',synced:'✓ ',error:'✗ ',offline:'⊘ '};
+  var icons = {syncing:'⟳ ', synced:'✓ ', error:'✗ ', offline:'⊘ '};
   el.textContent = (icons[status]||'') + msg;
   el.style.opacity = '1';
-  if(status==='synced'||status==='offline'){
-    setTimeout(function(){ el.style.opacity='0'; }, 3000);
+  if(status === 'synced' || status === 'offline'){
+    setTimeout(function(){ el.style.opacity = '0'; }, 3000);
   }
 }
 
 function syncToCloud(){
+  if(_isSyncing) return;
   if(!navigator.onLine){ showSyncStatus('offline','Offline'); return; }
+
   var data = localStorage.getItem('planner_v4');
-  if(!data || data===_lastSyncedData) return;
+  if(!data) return;
+
+  // Add/update sync timestamp before pushing
+  try{
+    var obj = JSON.parse(data);
+    obj._syncTime = Date.now();
+    data = JSON.stringify(obj);
+    localStorage.setItem('planner_v4', data);
+  }catch(e){ return; }
+
+  _isSyncing = true;
   showSyncStatus('syncing','Syncing...');
-  fetch(CF_WORKER_URL,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:data
+
+  fetch('https://rough-disk-850a.johnpetty59.workers.dev', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: data
   }).then(function(r){
-    if(r.ok){ _lastSyncedData=data; showSyncStatus('synced','Synced'); }
-    else showSyncStatus('error','Sync failed');
-  }).catch(function(){ showSyncStatus('error','Sync failed'); });
+    _isSyncing = false;
+    if(r.ok){
+      _lastSyncTime = Date.now();
+      showSyncStatus('synced','Synced');
+    } else {
+      showSyncStatus('error','Sync failed');
+    }
+  }).catch(function(e){
+    _isSyncing = false;
+    showSyncStatus('error','Sync failed');
+  });
 }
 
 function loadFromCloud(){
   if(!navigator.onLine){ showSyncStatus('offline','Offline'); return; }
   showSyncStatus('syncing','Loading...');
-  fetch(CF_WORKER_URL)
+
+  fetch('https://rough-disk-850a.johnpetty59.workers.dev')
     .then(function(r){ return r.json(); })
     .then(function(cloudData){
-      if(!cloudData||cloudData.empty||cloudData.error){
-        showSyncStatus('synced','Ready'); return;
+      if(!cloudData || cloudData.empty || cloudData.error){
+        showSyncStatus('synced','Ready');
+        // Nothing in cloud yet — push local data up
+        setTimeout(syncToCloud, 500);
+        return;
       }
+
+      var cloudState = typeof cloudData === 'string'
+        ? JSON.parse(cloudData) : cloudData;
+      var cloudTime = cloudState._syncTime || 0;
+
       var localRaw = localStorage.getItem('planner_v4');
-      var localState = localRaw ? JSON.parse(localRaw) : null;
-      var cloudState = typeof cloudData==='string' ? JSON.parse(cloudData) : cloudData;
-      var localTime = localState&&localState._syncTime ? localState._syncTime : 0;
-      var cloudTime = cloudState&&cloudState._syncTime ? cloudState._syncTime : 0;
+      var localTime = 0;
+      if(localRaw){
+        try{ localTime = JSON.parse(localRaw)._syncTime || 0; }catch(e){}
+      }
+
       if(cloudTime > localTime){
+        // Cloud is newer — load it
         localStorage.setItem('planner_v4', JSON.stringify(cloudState));
         state = Object.assign(state, cloudState);
-        renderAll(); renderDashboard();
+        renderAll();
+        renderDashboard();
         showSyncStatus('synced','Loaded from cloud');
-      } else {
+      } else if(localTime > 0 && localTime >= cloudTime){
+        // Local is newer or equal — push to cloud
         showSyncStatus('synced','Up to date');
+        if(localTime > cloudTime) setTimeout(syncToCloud, 500);
+      } else {
+        showSyncStatus('synced','Ready');
       }
-    }).catch(function(){ showSyncStatus('error','Cloud unreachable'); });
+    }).catch(function(){
+      showSyncStatus('error','Cloud unreachable');
+    });
 }
 
-function autoSyncAfterSave(){
+function triggerSync(){
+  // Called after every save — debounced 2 seconds
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(syncToCloud, 2000);
 }
 
 function initCloudSync(){
-  // Load from cloud on startup
+  // 1. Load from cloud on startup (after 1.5 seconds)
   setTimeout(loadFromCloud, 1500);
-  // Sync every 5 minutes
-  setInterval(syncToCloud, 5*60*1000);
-  // Sync when tab becomes visible
+
+  // 2. Push to cloud every 3 minutes as safety net
+  setInterval(syncToCloud, 3 * 60 * 1000);
+
+  // 3. Sync when tab becomes visible again
   document.addEventListener('visibilitychange', function(){
-    if(document.visibilityState==='visible') loadFromCloud();
-  });
-  // Hook into all save buttons and task completions
-  document.addEventListener('click', function(e){
-    var t = e.target;
-    if(t && (t.type==='checkbox' || t.className.indexOf('btn')!==-1)){
-      setTimeout(autoSyncAfterSave, 100);
+    if(document.visibilityState === 'visible'){
+      loadFromCloud();
     }
   });
 }
