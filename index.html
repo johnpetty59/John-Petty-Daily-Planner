@@ -2916,6 +2916,10 @@ const JOURNAL_PROMPTS = [
 let _promptIdx = Math.floor(Math.random()*JOURNAL_PROMPTS.length);
 
 // ── Runtime state variables — declared early ──
+// ── Cloudflare Sync — declared early ──
+var CF_WORKER_URL = 'https://rough-disk-850a.johnpetty59.workers.dev';
+// _syncTimer and _lastSyncedData moved to early declarations
+
 // ── Theme system — declared early ──
 var THEME_KEY = 'plannerTheme';
 var THEME_COLORS = {
@@ -10239,7 +10243,7 @@ function setTaskStatus(listName, idx, status){
 // =================================================================
 // CLOUDFLARE KV SYNC — rev29
 // =================================================================
-var CF_WORKER_URL = 'https://rough-disk-850a.johnpetty59.workers.dev';
+// CF_WORKER_URL moved to early declarations
 var _syncTimer = null;
 var _lastSyncedData = '';
 
